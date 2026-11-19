@@ -67,6 +67,7 @@ export const packages: Package[] = [
 			'Wheel Cleaning',
 			'Tire Shine',
 			'Wax Protection',
+			'Triple Foam',
 			'Interior Cleaning',
 			'Dash & Door Detail'
 		],

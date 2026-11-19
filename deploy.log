@@ -1,0 +1,33 @@
++ npx --yes wrangler@latest pages project create florida-shine-car-wash --production-branch main
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mProxy environment variables detected. We'll use your proxy for fetch requests.[0m
+
+
+
+ ⛅️ wrangler 4.165.0
+────────────────────
+✨ Successfully created the 'florida-shine-car-wash' project. It will be available at https://florida-shine-car-wash.pages.dev/ once you create your first deployment.
+To deploy a folder of assets, run 'wrangler pages deploy [directory]'.
+project create exit: 0
++ npx --yes wrangler@latest pages deploy build --project-name florida-shine-car-wash --branch main --commit-message Deploy via Muse (same setup as Creatix)
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mProxy environment variables detected. We'll use your proxy for fetch requests.[0m
+
+
+
+ ⛅️ wrangler 4.165.0
+────────────────────
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mWarning: Your working directory is a git repo and has uncommitted changes[0m
+
+  To silence this warning, pass in --commit-dirty=true
+
+
+Uploading... (0/309)
+Uploading... (103/309)
+Uploading... (206/309)
+Uploading... (309/309)
+✨ Success! Uploaded 309 files (15.01 sec)
+
+✨ Uploading _headers
+🌎 Deploying...
+✨ Deployment complete! Take a peek over at https://ca98ac4d.florida-shine-car-wash.pages.dev
+deploy exit: 0
+DEPLOY_EXIT:0
