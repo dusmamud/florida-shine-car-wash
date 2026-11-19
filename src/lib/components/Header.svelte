@@ -43,6 +43,7 @@
 		</nav>
 
 		<div class="flex items-center gap-2">
+			<a href="/account" class="hidden min-h-12 items-center rounded-full px-3 py-2 text-sm font-bold hover:bg-white/10 xl:flex">Manage My Plan</a>
 			<a href="tel:+13055550198" class="hidden min-h-12 items-center gap-2 rounded-full px-3 py-2 text-sm font-bold hover:bg-white/10 md:flex" aria-label="Call Florida Shine">
 				<Phone class="h-4 w-4" aria-hidden="true" /> (305) 555-0198
 			</a>
@@ -74,6 +75,7 @@
 					aria-current={page.url.pathname === l.href ? 'page' : undefined}
 					class="block min-h-12 rounded-lg px-3 py-3 text-base font-bold text-white hover:bg-white/10">{l.label}</a>
 			{/each}
+			<a href="/account" onclick={() => (open = false)} class="block min-h-12 rounded-lg px-3 py-3 text-base font-bold text-white hover:bg-white/10">Manage My Plan</a>
 			<a href="/locations" onclick={() => (open = false)} class="mt-2 flex min-h-12 items-center justify-center gap-2 rounded-full bg-sun px-4 py-3 text-base font-black text-navy">
 				<MapPin class="h-5 w-5" aria-hidden="true" /> FIND A LOCATION
 			</a>

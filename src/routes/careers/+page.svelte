@@ -1,10 +1,16 @@
 <script lang="ts">
 	import { Briefcase, MapPin } from '@lucide/svelte';
 	import PageHero from '#lib/components/PageHero.svelte';
+	import Seo from '#lib/components/Seo.svelte';
 	import { careers } from '#lib/data/site.ts';
 	let applied = $state('');
 </script>
-<svelte:head><title>Careers — Florida Shine Car Wash</title></svelte:head>
+<Seo
+	title="Careers — Florida Shine Car Wash"
+	description="Careers at Florida Shine Car Wash: wash attendant, detail technician, shift supervisor and customer service roles across Florida, from $16/hr. We train you and promote from within."
+	canonical="/careers"
+	ogImage="about-team"
+/>
 <PageHero eyebrow="JOIN THE TEAM" title="Careers at Florida Shine" subtitle="Sunny days, friendly drivers and cars that leave happier than they arrived. We train you, pay fairly and promote from within." />
 <section class="mx-auto max-w-4xl px-4 py-12 sm:px-6">
 	<div class="grid gap-4">

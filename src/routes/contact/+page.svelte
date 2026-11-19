@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Clock, Mail, MapPin, Phone } from '@lucide/svelte';
 	import PageHero from '#lib/components/PageHero.svelte';
+	import Seo from '#lib/components/Seo.svelte';
 	import { site } from '#lib/data/site.ts';
 	let name = $state(''); let email = $state(''); let topic = $state('General question'); let message = $state('');
 	let sent = $state(false); let err = $state('');
@@ -10,7 +11,12 @@
 		err = ''; sent = true;
 	}
 </script>
-<svelte:head><title>Contact — Florida Shine Car Wash</title></svelte:head>
+<Seo
+	title="Contact — Florida Shine Car Wash"
+	description="Contact Florida Shine Car Wash: call (305) 555-0198, email hello@floridashinecarwash.com, or visit our Miami head office at 1200 Biscayne Blvd. We answer within one business day."
+	canonical="/contact"
+	ogImage="wash-building"
+/>
 <PageHero eyebrow="TALK TO US" title="Contact Florida Shine" subtitle="Questions, feedback or a lost item at the wash? We answer every message within one business day." />
 <section class="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-2">
 	<div>
