@@ -1,9 +1,15 @@
 <script lang="ts">
 	import PageHero from '#lib/components/PageHero.svelte';
 	import Picture from '#lib/components/Picture.svelte';
+	import Seo from '#lib/components/Seo.svelte';
 	import { team } from '#lib/data/site.ts';
 </script>
-<svelte:head><title>About Us — Florida Shine Car Wash</title></svelte:head>
+<Seo
+	title="About Us — Florida Shine Car Wash"
+	description="Florida Shine started in 2018 with one wash tunnel in Miami. Now 8 locations from Miami to Jacksonville, with eco-safe soaps, reclaimed water and a team that treats every car like its own."
+	canonical="/about"
+	ogImage="about-team"
+/>
 <PageHero eyebrow="ABOUT US" title="Born in Florida, Built for Florida" subtitle="Florida Shine started in 2018 with one wash tunnel in Miami and a simple idea: a clean car should be fast, affordable and kind to the planet." />
 <section class="mx-auto grid max-w-7xl items-center gap-8 px-4 py-12 sm:px-6 lg:grid-cols-2">
 	<Picture src="about-team" alt="The Florida Shine team beside a freshly washed car" width={1200} height={800} sizes="(max-width: 1024px) 100vw, 50vw" eager class="h-72 w-full overflow-hidden rounded-3xl sm:h-96" />
@@ -23,11 +29,13 @@
 	<h2 class="text-center font-display text-3xl font-black text-navy">Meet the Team</h2>
 	<div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
 		{#each team as t}
-			<article class="rounded-3xl bg-white p-6 shadow ring-1 ring-line">
-				<span class="flex h-14 w-14 items-center justify-center rounded-full bg-navy font-display text-xl font-black text-sun" aria-hidden="true">{t.name.split(' ').map((w) => w[0]).join('')}</span>
-				<h3 class="mt-4 font-black text-navy">{t.name}</h3>
-				<p class="text-sm font-bold text-navy-light">{t.role}</p>
-				<p class="mt-2 text-sm leading-relaxed text-muted">{t.bio}</p>
+			<article class="overflow-hidden rounded-3xl bg-white shadow ring-1 ring-line">
+				<Picture src={t.photo} alt="Portrait of {t.name}, {t.role} at Florida Shine" width={800} height={800} sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw" class="aspect-square w-full" />
+				<div class="p-6">
+					<h3 class="font-black text-navy">{t.name}</h3>
+					<p class="text-sm font-bold text-navy-light">{t.role}</p>
+					<p class="mt-2 text-sm leading-relaxed text-muted">{t.bio}</p>
+				</div>
 			</article>
 		{/each}
 	</div>

@@ -57,24 +57,38 @@ body {
 	}
 }
 
-/* Reveal-on-scroll: transform + opacity only */
+/* Reveal-on-scroll: visible by default. The hidden state only applies when JS
+   has added .reveal-js (see Reveal.svelte) — so no-JS / no-scroll content is
+   never hidden. Transform + opacity only. */
 .reveal {
+	opacity: 1;
+	transform: none;
+}
+.reveal-js {
 	opacity: 0;
 	transform: translateY(16px);
 	transition:
 		opacity 300ms var(--ease-out-expo),
 		transform 300ms var(--ease-out-expo);
 }
-.reveal.is-visible {
+.reveal-js.is-visible {
 	opacity: 1;
 	transform: translateY(0);
 }
 @media (prefers-reduced-motion: reduce) {
-	.reveal {
+	.reveal-js {
 		opacity: 1;
 		transform: none;
 		transition: none;
 	}
+}
+
+/* Visible keyboard focus on the Before/After slider (range input inside a figure):
+   outline the whole figure when its range input is keyboard-focused. */
+figure:has(input[type='range']:focus-visible) {
+	outline: 3px solid #ffc700;
+	outline-offset: 3px;
+	border-radius: 24px;
 }
 
 /* Bubble drift for hero / foam sections */

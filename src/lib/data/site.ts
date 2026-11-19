@@ -19,6 +19,55 @@ export const site = {
 	]
 };
 
+export const ratingSummary = {
+	average: 4.8,
+	totalReviews: 2400,
+	featuredCount: 6,
+	source: 'Google reviews'
+};
+
+export const sizeUpcharges: Record<string, number> = { Sedan: 0, SUV: 5, Truck: 8, Van: 8, 'Sports car': 0 };
+export const sizeUpchargeNote =
+	'Vehicle size upcharge: Sedan and Sports car included · SUV +$5 · Truck and Van +$8, added to the wash price at booking.';
+
+export const beforeAfter = {
+	before: 'dirty-car',
+	after: 'hero-soapy-car',
+	caption: 'A genuinely dirty car, before and after a Florida Shine wash — two different photos, not a filter.'
+};
+
+export const reviewSources = {
+	googleUrl: 'https://maps.google.com/?q=Florida+Shine+Car+Wash+Miami'
+};
+
+export const firstVisit = {
+	steps: [
+		{ title: 'Drive in', text: 'Follow the blue arrows into the tunnel entrance. Stay in your car — no need to get out.' },
+		{ title: 'Through the tunnel', text: 'Soft-touch foam, rinse and blow-dry take about 5 minutes. Fold in your mirrors and antenna if they stick out.' },
+		{ title: 'Dry & finish', text: 'Our team towel-dries the edges and checks the shine before you roll out.' },
+		{ title: 'Free vacuums', text: 'Pull into a vacuum bay after your wash — free for 15 minutes with any wash.' }
+	],
+	notes: [
+		'Stay in your car for the whole tunnel wash.',
+		'Fold in side mirrors and retract antennas before entering.',
+		'The tunnel fits vehicles up to 7 ft tall and 7 ft wide.',
+		'A tunnel wash takes about 5 minutes; detailing is by appointment.'
+	]
+};
+
+export const accessibility = {
+	features: [
+		'Step-free access from the parking area into every wash lobby and waiting area.',
+		'Accessible parking bays close to the entrance at all 8 locations.',
+		'Staff assistance available — wave or call ahead and a team member will guide your car through the tunnel.',
+		'Accessible restrooms at all locations with a detail studio.',
+		'Large-print price boards and staff who are happy to read them aloud.',
+		'Service animals are welcome in waiting areas.'
+	],
+	statement:
+		'Florida Shine aims to meet WCAG 2.2 AA on this website and to make every wash accessible in person. If you hit a barrier, call (305) 555-0198 or email hello@floridashinecarwash.com and we will help.'
+};
+
 export type Package = {
 	slug: string;
 	name: string;
@@ -76,16 +125,16 @@ export const packages: Package[] = [
 	}
 ];
 
-export type Addon = { name: string; price: number; description: string; time: string };
+export type Addon = { name: string; price: number; description: string; time: string; note: string };
 export const addons: Addon[] = [
-	{ name: 'Ceramic Coating', price: 199, description: 'Up to 12 months of hydrophobic protection and deep gloss.', time: '2 hours' },
-	{ name: 'Full Interior Detail', price: 89, description: 'Deep vacuum, shampoo, leather care and console detail.', time: '90 minutes' },
-	{ name: 'Pet Hair Removal', price: 25, description: 'Specialist tools lift embedded pet hair from seats and carpet.', time: '20 minutes' },
-	{ name: 'Headlight Restoration', price: 39, description: 'Restores cloudy headlights to clear, bright and safe.', time: '30 minutes' },
-	{ name: 'Odor Elimination', price: 29, description: 'Ozone treatment removes smoke, food and mildew smells.', time: '30 minutes' },
-	{ name: 'Engine Bay Detail', price: 35, description: 'Safe degrease and dress for a showroom engine bay.', time: '25 minutes' },
-	{ name: 'Rain Repellent', price: 15, description: 'Windshield treatment that beads water away at speed.', time: '10 minutes' },
-	{ name: 'Clay Bar Treatment', price: 49, description: 'Removes bonded contaminants for glass-smooth paint.', time: '40 minutes' }
+	{ name: 'Ceramic Coating', price: 199, description: 'Up to 12 months of hydrophobic protection and deep gloss.', time: '2 hours', note: 'The same 12-month professional ceramic coating as the standalone service — add it to any wash here, or book it as its own appointment.' },
+	{ name: 'Full Interior Detail', price: 89, description: 'Deep vacuum, shampoo, leather care and console detail.', time: '90 minutes', note: 'A deep shampoo detail added to your wash — the standalone Interior Detailing service starts at $45 for a basic interior clean.' },
+	{ name: 'Pet Hair Removal', price: 25, description: 'Specialist tools lift embedded pet hair from seats and carpet.', time: '20 minutes', note: 'Same $25 either way — as an add-on to a wash or as part of the standalone Pet Hair & Odor Removal service.' },
+	{ name: 'Headlight Restoration', price: 39, description: 'Restores cloudy headlights to clear, bright and safe.', time: '30 minutes', note: 'A standalone add-on — not part of any wash package.' },
+	{ name: 'Odor Elimination', price: 29, description: 'Ozone treatment removes smoke, food and mildew smells.', time: '30 minutes', note: 'The same ozone treatment included in the Pet Hair & Odor Removal service — add it on its own here.' },
+	{ name: 'Engine Bay Detail', price: 35, description: 'Safe degrease and dress for a showroom engine bay.', time: '25 minutes', note: 'A standalone add-on — not part of any wash package.' },
+	{ name: 'Rain Repellent', price: 15, description: 'Windshield treatment that beads water away at speed.', time: '10 minutes', note: 'A quick add-on to any wash — not part of any wash package.' },
+	{ name: 'Clay Bar Treatment', price: 49, description: 'Removes bonded contaminants for glass-smooth paint.', time: '40 minutes', note: 'The same clay bar prep used before our Ceramic Coating service — add it to any wash here.' }
 ];
 
 export type Service = {
@@ -97,6 +146,11 @@ export type Service = {
 	duration: string;
 	includes: string[];
 	image: string;
+	process?: string[];
+	aftercare?: string;
+	warranty?: string;
+	limits?: string[];
+	sprayVsPro?: string;
 };
 export const services: Service[] = [
 	{
@@ -130,7 +184,23 @@ export const services: Service[] = [
 		priceFrom: 199,
 		duration: '2 hours',
 		includes: ['Wash & decontamination', 'Clay bar prep', 'Ceramic application', 'Curing time', '12-month protection', 'Aftercare guide'],
-		image: 'ceramic-coating'
+		image: 'ceramic-coating',
+		process: [
+			'Wash & decontamination — a full hand wash strips old wax and road film so the coating can bond to clean paint.',
+			'Clay bar prep — a clay bar lifts bonded contaminants the wash cannot, leaving glass-smooth paint.',
+			'Ceramic application — the coating is applied panel by panel in a dust-controlled bay and levelled by hand.',
+			'Curing time — the coating cures for up to 24 hours. Keep the car dry in that window; we give you the exact time.'
+		],
+		aftercare:
+			'Wash with pH-neutral soap only, never automatic brush washes. Avoid waxing over the coating — it does not need it. A maintenance wash every 4–6 weeks keeps the beading strong.',
+		warranty: '12-month warranty: if the beading fails on a properly maintained car within 12 months, we re-apply the affected panels free.',
+		limits: [
+			'Ceramic coating does NOT stop rock chips — it is a thin chemical layer, not armour.',
+			'It does NOT make paint scratch-proof — keys, brushes and grit can still mark it.',
+			'It does NOT remove existing scratches or swirl marks — paint correction is a separate service.'
+		],
+		sprayVsPro:
+			'Spray ceramic is a quick top-up that lasts weeks; our professional coating is a multi-step application that bonds to the paint and lasts up to 12 months. Spray products are fine for maintenance between professional applications — they are not a substitute for one.'
 	},
 	{
 		slug: 'wax-and-polish',
@@ -174,6 +244,11 @@ export type Membership = {
 	tagline: string;
 	features: string[];
 	popular?: boolean;
+	billing: string;
+	recognition: string;
+	dailyLimit: string;
+	extraVehiclePrice: number;
+	breakEven: string;
 };
 export const memberships: Membership[] = [
 	{
@@ -181,7 +256,12 @@ export const memberships: Membership[] = [
 		name: 'Basic Club',
 		price: 19,
 		tagline: 'Unlimited Basic Washes, every month.',
-		features: ['Unlimited Basic Washes', 'One car per plan', 'Cancel anytime', 'Member-only wash lane']
+		features: ['Unlimited Basic Washes', 'One car per plan', 'Cancel anytime', 'Member-only wash lane'],
+		billing: 'Billed monthly on your join date',
+		recognition: 'RFID windshield sticker',
+		dailyLimit: '1 wash per day, per vehicle',
+		extraVehiclePrice: 10,
+		breakEven: 'Pays for itself in 2 washes'
 	},
 	{
 		slug: 'premium-club',
@@ -189,14 +269,24 @@ export const memberships: Membership[] = [
 		price: 29,
 		tagline: 'Unlimited Premium Washes + wax.',
 		features: ['Unlimited Premium Washes', 'Wax protection included', 'One car per plan', 'Cancel anytime', 'Free vacuum use', 'Member-only wash lane'],
-		popular: true
+		popular: true,
+		billing: 'Billed monthly on your join date',
+		recognition: 'RFID windshield sticker',
+		dailyLimit: '1 wash per day, per vehicle',
+		extraVehiclePrice: 15,
+		breakEven: 'Pays for itself in 2 washes'
 	},
 	{
 		slug: 'deluxe-club',
 		name: 'Deluxe Club',
 		price: 39,
 		tagline: 'Unlimited everything, inside and out.',
-		features: ['Unlimited Deluxe Details', 'Interior cleaning included', 'One car per plan', 'Cancel anytime', 'Free vacuum use', '10% off add-ons', 'Priority booking lane']
+		features: ['Unlimited Deluxe Details', 'Interior cleaning included', 'One car per plan', 'Cancel anytime', 'Free vacuum use', '10% off add-ons', 'Priority booking lane'],
+		billing: 'Billed monthly on your join date',
+		recognition: 'RFID windshield sticker',
+		dailyLimit: '1 wash per day, per vehicle',
+		extraVehiclePrice: 20,
+		breakEven: 'Pays for itself in 1 wash'
 	}
 ];
 
@@ -211,16 +301,23 @@ export type Location = {
 	features: string[];
 	lat: number;
 	lng: number;
+	image: string;
+	washType: string;
+	vacuums: number;
+	lastWash: string;
+	entrance: string;
+	busyHours: string;
+	transferable: boolean;
 };
 export const locations: Location[] = [
-	{ slug: 'miami-downtown', city: 'Miami', name: 'Downtown Miami', address: '1200 Biscayne Blvd', zip: '33132', phone: '(305) 555-0198', hours: 'Mon–Sat 7 AM–7 PM · Sun 8 AM–6 PM', features: ['Tunnel wash', 'Detail studio', 'Free vacuums', 'EV charging'], lat: 25.78, lng: -80.19 },
-	{ slug: 'miami-kendall', city: 'Miami', name: 'Kendall', address: '8400 SW 88th St', zip: '33156', phone: '(305) 555-0142', hours: 'Mon–Sat 7 AM–7 PM · Sun 8 AM–6 PM', features: ['Tunnel wash', 'Detail studio', 'Free vacuums'], lat: 25.66, lng: -80.36 },
-	{ slug: 'tampa', city: 'Tampa', name: 'Tampa — Dale Mabry', address: '4200 N Dale Mabry Hwy', zip: '33607', phone: '(813) 555-0117', hours: 'Mon–Sat 7 AM–7 PM · Sun 8 AM–6 PM', features: ['Tunnel wash', 'Detail studio', 'Free vacuums', 'Pet wash bay'], lat: 27.99, lng: -82.51 },
-	{ slug: 'orlando', city: 'Orlando', name: 'Orlando — International Drive', address: '7800 International Dr', zip: '32819', phone: '(407) 555-0163', hours: 'Mon–Sat 7 AM–7 PM · Sun 8 AM–6 PM', features: ['Tunnel wash', 'Detail studio', 'Free vacuums'], lat: 28.44, lng: -81.47 },
-	{ slug: 'jacksonville', city: 'Jacksonville', name: 'Jacksonville — Southside', address: '9500 Southside Blvd', zip: '32256', phone: '(904) 555-0128', hours: 'Mon–Sat 7 AM–7 PM · Sun 8 AM–6 PM', features: ['Tunnel wash', 'Free vacuums'], lat: 30.24, lng: -81.55 },
-	{ slug: 'fort-lauderdale', city: 'Fort Lauderdale', name: 'Fort Lauderdale — Federal Hwy', address: '2600 N Federal Hwy', zip: '33306', phone: '(954) 555-0174', hours: 'Mon–Sat 7 AM–7 PM · Sun 8 AM–6 PM', features: ['Tunnel wash', 'Detail studio', 'Free vacuums', 'EV charging'], lat: 26.15, lng: -80.12 },
-	{ slug: 'naples', city: 'Naples', name: 'Naples — Tamiami Trail', address: '5600 Tamiami Trail N', zip: '34108', phone: '(239) 555-0155', hours: 'Mon–Sat 7 AM–7 PM · Sun 8 AM–6 PM', features: ['Tunnel wash', 'Detail studio', 'Free vacuums'], lat: 26.24, lng: -81.8 },
-	{ slug: 'sarasota', city: 'Sarasota', name: 'Sarasota — Bee Ridge', address: '4100 Bee Ridge Rd', zip: '34233', phone: '(941) 555-0189', hours: 'Mon–Sat 7 AM–7 PM · Sun 8 AM–6 PM', features: ['Tunnel wash', 'Free vacuums'], lat: 27.3, lng: -82.5 }
+	{ slug: 'miami-downtown', city: 'Miami', name: 'Downtown Miami', address: '1200 Biscayne Blvd', zip: '33132', phone: '(305) 555-0198', hours: 'Mon–Sat 7 AM–7 PM · Sun 8 AM–6 PM', features: ['Tunnel wash', 'Detail studio', 'Free vacuums', 'EV charging'], lat: 25.78, lng: -80.19, image: 'location-miami-downtown', washType: 'Soft-touch tunnel', vacuums: 10, lastWash: 'Last wash 15 minutes before closing', entrance: 'Enter from Biscayne Blvd — follow the blue arrows', busyHours: 'Usually busy: Sat 10 AM–2 PM · Usually quiet: Tue–Thu mornings', transferable: true },
+	{ slug: 'miami-kendall', city: 'Miami', name: 'Kendall', address: '8400 SW 88th St', zip: '33156', phone: '(305) 555-0142', hours: 'Mon–Sat 7 AM–7 PM · Sun 8 AM–6 PM', features: ['Tunnel wash', 'Detail studio', 'Free vacuums'], lat: 25.66, lng: -80.36, image: 'location-miami-kendall', washType: 'Soft-touch tunnel', vacuums: 8, lastWash: 'Last wash 15 minutes before closing', entrance: 'Enter from SW 88th St — the tunnel is behind the vacuum bays', busyHours: 'Usually busy: Sat 9 AM–1 PM · Usually quiet: Mon–Wed mornings', transferable: true },
+	{ slug: 'tampa', city: 'Tampa', name: 'Dale Mabry', address: '4200 N Dale Mabry Hwy', zip: '33607', phone: '(813) 555-0117', hours: 'Mon–Sat 7 AM–7 PM · Sun 8 AM–6 PM', features: ['Tunnel wash', 'Detail studio', 'Free vacuums', 'Pet wash bay'], lat: 27.99, lng: -82.51, image: 'location-tampa', washType: 'Soft-touch tunnel', vacuums: 10, lastWash: 'Last wash 15 minutes before closing', entrance: 'Enter from N Dale Mabry Hwy — turn in at the yellow arch', busyHours: 'Usually busy: Sat 10 AM–2 PM · Usually quiet: Tue–Thu afternoons', transferable: true },
+	{ slug: 'orlando', city: 'Orlando', name: 'International Drive', address: '7800 International Dr', zip: '32819', phone: '(407) 555-0163', hours: 'Mon–Sat 7 AM–7 PM · Sun 8 AM–6 PM', features: ['Tunnel wash', 'Detail studio', 'Free vacuums'], lat: 28.44, lng: -81.47, image: 'location-orlando', washType: 'Soft-touch tunnel', vacuums: 8, lastWash: 'Last wash 15 minutes before closing', entrance: 'Enter from International Dr — look for the blue wave sign', busyHours: 'Usually busy: Fri–Sat 11 AM–3 PM · Usually quiet: Mon–Tue mornings', transferable: true },
+	{ slug: 'jacksonville', city: 'Jacksonville', name: 'Southside', address: '9500 Southside Blvd', zip: '32256', phone: '(904) 555-0128', hours: 'Mon–Sat 7 AM–7 PM · Sun 8 AM–6 PM', features: ['Tunnel wash', 'Free vacuums'], lat: 30.24, lng: -81.55, image: 'location-jacksonville', washType: 'Soft-touch tunnel', vacuums: 6, lastWash: 'Last wash 15 minutes before closing', entrance: 'Enter from Southside Blvd — the tunnel is on the left as you pull in', busyHours: 'Usually busy: Sat 9 AM–12 PM · Usually quiet: Wed–Thu mornings', transferable: true },
+	{ slug: 'fort-lauderdale', city: 'Fort Lauderdale', name: 'Federal Hwy', address: '2600 N Federal Hwy', zip: '33306', phone: '(954) 555-0174', hours: 'Mon–Sat 7 AM–7 PM · Sun 8 AM–6 PM', features: ['Tunnel wash', 'Detail studio', 'Free vacuums', 'EV charging'], lat: 26.15, lng: -80.12, image: 'location-fort-lauderdale', washType: 'Soft-touch tunnel', vacuums: 10, lastWash: 'Last wash 15 minutes before closing', entrance: 'Enter from N Federal Hwy — follow the blue arrows past the vacuums', busyHours: 'Usually busy: Sat 10 AM–2 PM · Usually quiet: Tue–Thu mornings', transferable: true },
+	{ slug: 'naples', city: 'Naples', name: 'Tamiami Trail', address: '5600 Tamiami Trail N', zip: '34108', phone: '(239) 555-0155', hours: 'Mon–Sat 7 AM–7 PM · Sun 8 AM–6 PM', features: ['Tunnel wash', 'Detail studio', 'Free vacuums'], lat: 26.24, lng: -81.8, image: 'location-naples', washType: 'Soft-touch tunnel', vacuums: 8, lastWash: 'Last wash 15 minutes before closing', entrance: 'Enter from Tamiami Trail N — the entrance is beside the palm row', busyHours: 'Usually busy: Sat 10 AM–1 PM · Usually quiet: Mon–Wed afternoons', transferable: true },
+	{ slug: 'sarasota', city: 'Sarasota', name: 'Bee Ridge', address: '4100 Bee Ridge Rd', zip: '34233', phone: '(941) 555-0189', hours: 'Mon–Sat 7 AM–7 PM · Sun 8 AM–6 PM', features: ['Tunnel wash', 'Free vacuums'], lat: 27.3, lng: -82.5, image: 'location-sarasota', washType: 'Soft-touch tunnel', vacuums: 6, lastWash: 'Last wash 15 minutes before closing', entrance: 'Enter from Bee Ridge Rd — turn in at the sun-yellow sign', busyHours: 'Usually busy: Sat 9 AM–12 PM · Usually quiet: Tue–Thu mornings', transferable: true }
 ];
 
 export const trustItems = [
@@ -254,23 +351,27 @@ export const gallery: GalleryItem[] = [
 ];
 
 export const reviews = [
-	{ name: 'Marcus T.', city: 'Miami', rating: 5, service: 'Premium Wash', text: 'Best wash in Miami, hands down. The triple foam and wax actually last — my car still beads water a week later.' },
-	{ name: 'Sofia R.', city: 'Tampa', rating: 5, service: 'Deluxe Detail', text: 'They got two years of beach sand out of my SUV. The interior looks brand new and it smells amazing.' },
-	{ name: 'James W.', city: 'Orlando', rating: 5, service: 'Premium Club', text: 'The Unlimited Club pays for itself in two visits. I stop in after every beach trip — in and out in 15 minutes.' },
-	{ name: 'Alicia G.', city: 'Fort Lauderdale', rating: 5, service: 'Ceramic Coating', text: 'Ceramic coating was worth every penny. Rain just rolls off now and the Florida sun has nothing on this shine.' },
-	{ name: 'David K.', city: 'Naples', rating: 4, service: 'Basic Wash', text: 'Quick, friendly and a genuinely good clean for the price. The free vacuums are a nice touch too.' },
-	{ name: 'Priya N.', city: 'Jacksonville', rating: 5, service: 'Pet Hair Removal', text: 'Two golden retrievers, one very hairy back seat — gone. The team was so kind about it too.' }
+	{ name: 'Marcus T.', city: 'Miami', rating: 5, service: 'Premium Wash', date: 'Nov 2026', location: 'miami-downtown', text: 'Best wash in Miami, hands down. The triple foam and wax actually last — my car still beads water a week later.' },
+	{ name: 'Sofia R.', city: 'Tampa', rating: 5, service: 'Deluxe Detail', date: 'Nov 2026', location: 'tampa', text: 'They got two years of beach sand out of my SUV. The interior looks brand new and it smells amazing.' },
+	{ name: 'James W.', city: 'Orlando', rating: 5, service: 'Premium Club', date: 'Oct 2026', location: 'orlando', text: 'The Unlimited Club pays for itself in two visits. I stop in after every beach trip — in and out in 15 minutes.' },
+	{ name: 'Alicia G.', city: 'Fort Lauderdale', rating: 5, service: 'Ceramic Coating', date: 'Oct 2026', location: 'fort-lauderdale', text: 'Ceramic coating was worth every penny. Rain just rolls off now and the Florida sun has nothing on this shine.' },
+	{ name: 'David K.', city: 'Naples', rating: 4, service: 'Basic Wash', date: 'Sep 2026', location: 'naples', text: 'Quick, friendly and a genuinely good clean for the price. The free vacuums are a nice touch too.' },
+	{ name: 'Priya N.', city: 'Jacksonville', rating: 5, service: 'Pet Hair Removal', date: 'Sep 2026', location: 'jacksonville', text: 'Two golden retrievers, one very hairy back seat — gone. The team was so kind about it too.' }
 ];
 
 export const faqs = [
-	{ q: 'How long does a wash take?', a: 'A Basic Wash takes about 10 minutes, Premium about 15, and a Deluxe Detail around 45 minutes. Detailing services are booked by appointment so there is no waiting around.' },
-	{ q: 'Do I need an appointment?', a: 'No appointment is needed for tunnel washes — just drive in. Detailing, ceramic coating and interior services are by appointment so we can give your car the time it deserves.' },
-	{ q: 'Is your wash safe for my paint?', a: 'Yes. We use soft-touch foam materials, filtered water and pH-neutral soaps. Our wash is safe for clear coat, ceramic coatings and vinyl wraps.' },
-	{ q: 'How does the Unlimited Wash Club work?', a: 'Pick a plan, register your car, and wash as often as you like at any Florida Shine location. Plans are month-to-month and you can cancel anytime.' },
-	{ q: 'Do you wash trucks and SUVs?', a: 'Yes — our tunnels fit most trucks and SUVs up to 7 feet tall. Oversized vehicles and dually trucks are welcome at our detail studios by appointment.' },
-	{ q: 'What payment methods do you accept?', a: 'We accept all major cards, Apple Pay, Google Pay and cash at every location. Memberships are billed monthly to your card.' },
-	{ q: 'Do you offer gift cards?', a: 'Yes — gift cards from $25 to $200 are available in-store and by phone. They never expire and work at every location.' },
-	{ q: 'What if it rains after my wash?', a: 'If it rains within 24 hours of your wash, come back for a free re-wash. Florida weather is unpredictable — your shine should not be.' }
+	{ q: 'How long does a wash take?', a: 'A Basic Wash takes about 10 minutes, Premium about 15, and a Deluxe Detail around 45 minutes. Detailing services are booked by appointment so there is no waiting around.', category: 'Wash' },
+	{ q: 'Do I need an appointment?', a: 'No appointment is needed for tunnel washes — just drive in. Detailing, ceramic coating and interior services are by appointment so we can give your car the time it deserves.', category: 'Booking' },
+	{ q: 'Is your wash safe for my paint?', a: 'Yes. We use soft-touch foam materials, filtered water and pH-neutral soaps. Our wash is safe for clear coat, ceramic coatings and vinyl wraps.', category: 'Wash' },
+	{ q: 'How does the Unlimited Wash Club work?', a: 'Pick a plan, register your car, and wash as often as you like at any Florida Shine location. Plans are month-to-month and you can cancel anytime.', category: 'Membership' },
+	{ q: 'Do you wash trucks and SUVs?', a: 'Yes — our tunnels fit most trucks and SUVs up to 7 feet tall. Oversized vehicles and dually trucks are welcome at our detail studios by appointment.', category: 'Wash' },
+	{ q: 'What payment methods do you accept?', a: 'We accept all major cards, Apple Pay, Google Pay and cash at every location. Memberships are billed monthly to your card.', category: 'Booking' },
+	{ q: 'Do you offer gift cards?', a: 'Yes — gift cards from $25 to $200 are available in-store and by phone. They never expire and work at every location.', category: 'Wash' },
+	{ q: 'What if it rains after my wash?', a: 'If it rains within 24 hours of your wash, come back for a free re-wash. Florida weather is unpredictable — your shine should not be.', category: 'Wash' },
+	{ q: 'How long does the rain-check last?', a: 'The rain-check is a free re-wash within 24 hours of rain after your wash. Bring your receipt (or your booking reference) and we will re-wash the same car free.', category: 'Wash' },
+	{ q: 'How tall a vehicle fits in the tunnel?', a: 'The tunnel fits vehicles up to 7 feet tall and 7 feet wide. Taller vehicles, dually trucks and oversized rigs are welcome at our detail studios by appointment.', category: 'Locations' },
+	{ q: 'Can I use my membership at any location?', a: 'Yes — every Unlimited Wash Club plan works at all 8 Florida Shine locations, and your RFID windshield sticker is recognised at every tunnel.', category: 'Membership' },
+	{ q: 'Do gift cards expire?', a: 'No. Gift cards never expire — under the federal 5-year rule they are valid for at least five years from purchase, and at Florida Shine they carry no expiry date at all.', category: 'Booking' }
 ];
 
 export const giftCards = [
@@ -281,10 +382,10 @@ export const giftCards = [
 ];
 
 export const team = [
-	{ name: 'Carlos Mendez', role: 'Founder & Miami Lead', bio: 'Started Florida Shine with one tunnel in Miami in 2018. Still inspects every wash bay himself.' },
-	{ name: 'Angela Brooks', role: 'Head of Detailing', bio: 'Ten years in paint care. Leads our ceramic and interior detail studios across Florida.' },
-	{ name: 'Devon Carter', role: 'Tampa Location Manager', bio: 'Runs our busiest tunnel and trains every new team member on the Florida Shine standard.' },
-	{ name: 'Maria Santos', role: 'Customer Experience', bio: 'The friendly voice on the phone and the reason our members never wait long.' }
+	{ name: 'Carlos Mendez', role: 'Founder & Miami Lead', bio: 'Started Florida Shine with one tunnel in Miami in 2018. Still inspects every wash bay himself.', photo: 'team-carlos' },
+	{ name: 'Angela Brooks', role: 'Head of Detailing', bio: 'Ten years in paint care. Leads our ceramic and interior detail studios across Florida.', photo: 'team-angela' },
+	{ name: 'Devon Carter', role: 'Tampa Location Manager', bio: 'Runs our busiest tunnel and trains every new team member on the Florida Shine standard.', photo: 'team-devon' },
+	{ name: 'Maria Santos', role: 'Customer Experience', bio: 'The friendly voice on the phone and the reason our members never wait long.', photo: 'team-maria' }
 ];
 
 export const careers = [
@@ -314,3 +415,107 @@ export function bookingRef(name: string, dateISO: string): string {
 export function money(n: number): string {
 	return `$${n}`;
 }
+
+export type BlogPost = {
+	slug: string;
+	title: string;
+	excerpt: string;
+	date: string;
+	readTime: string;
+	image: string;
+	category: string;
+	body: string[];
+};
+export const blogPosts: BlogPost[] = [
+	{
+		slug: 'lovebug-season',
+		title: 'Love Bug Season: Wash Them Off Before They Etch Your Paint',
+		excerpt: 'Love bugs swarm twice a year in Florida — April to May and August to September — and their residue can etch clear coat in just a day or two of sun. Here is what to do.',
+		date: 'April 2026',
+		readTime: '4 min read',
+		image: 'blog-lovebugs',
+		category: 'Car Care Tips',
+		body: [
+			'Love bugs arrive in two waves every year — roughly April to May, then again August to September — and they arrive in clouds. A single drive down I-95 can leave your bumper and mirrors plastered with them.',
+			'The danger is not the bug itself, it is what happens next. Love bug residue is acidic, and in Florida sun it bakes onto the paint. Left for a day or two, it can etch the clear coat — a dull mark that no wash will remove and only polishing can fix.',
+			'The rule is simple: wash it off fast. A rinse within 24 hours is usually enough; after 48 hours in the sun you are gambling with your paint. Our tunnel wash and a quick bug-removal pass at the front of the car handle it in minutes.',
+			'If you drive through a swarm, do not scrub the dried residue with a dry cloth — that grinds it into the paint. Wet it first, or drive straight to a wash. And a coat of wax or ceramic before the season starts gives the residue far less to grip onto.',
+			'Members wash free all season, which is the cheapest insurance against a swarm. Non-members: a Basic Wash right after a buggy drive is the best $16 you will spend on your paint.'
+		]
+	},
+	{
+		slug: 'salt-air-care',
+		title: 'Salt Air & Hard Water: Protecting Your Car on the Gulf Coast',
+		excerpt: 'Florida salt air and hard water leave spots, streaks and corrosion if they sit. A spot-free rinse and regular wax are your best defence.',
+		date: 'March 2026',
+		readTime: '4 min read',
+		image: 'blog-salt-air',
+		category: 'Car Care Tips',
+		body: [
+			'Living near the Gulf means your car breathes salt air every day. Salt settles on paint, in door jambs and under the car, and where it sits it corrodes — slowly on paint, faster on bare metal and brake parts.',
+			'Hard water makes it worse. Tap water in much of Florida is mineral-heavy, so a wash with unfiltered water dries into white spots that etch into the clear coat in the sun. That is why every Florida Shine wash finishes with a filtered, spot-free rinse.',
+			'The defence is boring but it works: wash regularly, rinse the underbody, and keep a layer of wax or ceramic between the salt and your paint. Our Premium Wash adds wax protection and an underbody rinse for exactly this reason.',
+			'Pay attention to the places you cannot see. Door jambs, the fuel flap and the underside of the boot lid collect salt and sand — wipe them when you wash, or ask our detail team to include them.',
+			'If you park near the beach, wash at least once a week in summer. It costs less than a single paint repair, and your car will look — and last — noticeably better.'
+		]
+	},
+	{
+		slug: 'ceramic-aftercare',
+		title: 'Ceramic Coating Aftercare: What It Does — and What It Does Not',
+		excerpt: 'A spray ceramic is not a professional coating, and a coating is not armour. How to look after your ceramic coating so it lasts the full 12 months.',
+		date: 'February 2026',
+		readTime: '5 min read',
+		image: 'blog-ceramic-aftercare',
+		category: 'Car Care Tips',
+		body: [
+			'First, the distinction that matters most: a spray ceramic you buy in a bottle is a quick top-up that lasts weeks. A professional coating is a multi-step application — wash, decontamination, clay bar, then the coating itself — that bonds to the paint and lasts up to 12 months. They are different products doing different jobs.',
+			'A professional coating does a lot: water beads and rolls off, dirt releases more easily, UV protection is built in, and the gloss is genuinely deeper than wax. What it does not do is stop rock chips — it is a thin chemical layer, not armour — and it does not make paint scratch-proof. Keys, brushes and grit can still mark it.',
+			'Aftercare is simple. Wash with pH-neutral soap only, and never take a coated car through an automatic brush wash — the brushes are what the coating cannot defend against. Avoid waxing over the coating; it does not need it and the wax can mask the beading.',
+			'Keep the car dry for the first 24 hours after application while the coating cures. After that, a maintenance wash every 4–6 weeks keeps the beading strong. If the beading fades on a properly maintained car within 12 months, our warranty covers re-application of the affected panels free.',
+			'Spray ceramic has its place: as maintenance between professional applications, it tops up the beading nicely. Just do not expect a spray bottle to do a professional coating\'s job.'
+		]
+	}
+];
+
+export const fleet = {
+	tiers: [
+		{ vehicles: '5–9 vehicles', discount: '10% off single-wash prices', note: 'Ideal for small businesses and trades.' },
+		{ vehicles: '10–24 vehicles', discount: '15% off single-wash prices', note: 'For growing fleets and delivery teams.' },
+		{ vehicles: '25+ vehicles', discount: 'Custom pricing', note: 'Tailored rates and a dedicated account manager.' }
+	],
+	invoicing: 'Monthly invoicing — one itemised bill for every vehicle, no per-wash payments at the tunnel.',
+	heightLimit: 'Vehicle height limit: 7 ft in the tunnel. Taller vehicles are detailed by appointment.',
+	identification: 'Fleet card or plate list — we recognise your vehicles by fleet card at the tunnel or by the plate list on your account.',
+	contact: { name: 'Maria Santos', role: 'Fleet Accounts', phone: '(305) 555-0198', email: 'fleet@floridashinecarwash.com' },
+	formFields: ['Company name', 'Contact name', 'Work email', 'Phone', 'Number of vehicles', 'Vehicle types', 'Home location', 'Anything else we should know']
+};
+
+export const offers = [
+	{
+		slug: 'first-wash-free',
+		title: 'Your First Wash Is Free',
+		detail: 'One free Basic Wash per vehicle for first-time visitors. Use text code SHINEFREE at the wash — no card required.',
+		terms: 'One free Basic Wash per vehicle, first visit only. No card required. Show the code SHINEFREE at any Florida Shine location. Not combinable with other offers.'
+	},
+	{
+		slug: 'premium-club-half-price',
+		title: 'First Month of Premium Club — 50% Off',
+		detail: 'Join Premium Club for $14.50 for your first month (50% off $29). It renews at $29/mo on your join-date anniversary.',
+		terms: 'First month $14.50, then $29/mo billed monthly on your join date. Unlimited Premium Washes, 1 wash per day per vehicle. Cancel anytime online or in person.'
+	},
+	{
+		slug: 'rain-check',
+		title: 'Rain-Check: Free Rewash Within 24 Hours of Rain',
+		detail: 'If it rains within 24 hours of your wash, come back for a free re-wash of the same car. Bring your receipt or booking reference.',
+		terms: 'Free re-wash within 24 hours of rain after your wash, same vehicle only. Bring your receipt or booking reference. One re-wash per paid wash.'
+	}
+];
+
+export const loyalty = {
+	name: 'Shine Rewards',
+	model: '1 stamp per wash, 8 stamps = a free Basic Wash.',
+	stampExpiry: 'Stamps expire after 12 months.',
+	referral: 'Give $5, get $5 — refer a friend and you both get $5 off your next wash.',
+	birthday: 'A free wash in your birthday month, every year.',
+	note: 'Shine Rewards is separate from the Unlimited Wash Club — Club members wash unlimited already, so stamps are for pay-per-wash drivers. Rewards are stated on this page with their expiry; no hidden terms.'
+};

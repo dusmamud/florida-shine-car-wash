@@ -2,9 +2,15 @@
 	import { Check, Plus } from '@lucide/svelte';
 	import PageHero from '#lib/components/PageHero.svelte';
 	import Picture from '#lib/components/Picture.svelte';
-	import { addons, packages } from '#lib/data/site.ts';
+	import Seo from '#lib/components/Seo.svelte';
+	import { addons, memberships, packages, sizeUpchargeNote } from '#lib/data/site.ts';
 </script>
-<svelte:head><title>Wash Packages — Florida Shine Car Wash</title></svelte:head>
+<Seo
+	title="Wash Packages — Florida Shine Car Wash"
+	description="Three wash packages from $16: Basic Wash $16, Premium Wash $28, Deluxe Detail $45. Soft-touch foam, spot-free rinse, wax and interior options at 8 Florida locations."
+	canonical="/packages"
+	ogImage="foam-wash"
+/>
 <PageHero eyebrow="CHOOSE YOUR SHINE" title="Wash Packages" subtitle="Three simple packages, one sparkling result. Every wash uses soft-touch foam, filtered water and a spot-free rinse — and every package can be booked online in two minutes." />
 <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6">
 	<div class="grid gap-6 md:grid-cols-3">
@@ -16,6 +22,7 @@
 					<h2 class="font-display text-2xl font-black text-navy">{pkg.name.toUpperCase()}</h2>
 					<p class="mt-1 text-sm text-muted">{pkg.tagline} {pkg.description}</p>
 					<p class="mt-4 font-display text-4xl font-black text-navy">${pkg.price} <span class="text-sm font-bold text-muted">· {pkg.duration}</span></p>
+					<p class="mt-2 text-sm text-muted">{pkg.slug === 'basic-wash' ? memberships[0].breakEven + ' with Basic Club ($19/mo).' : pkg.slug === 'premium-wash' ? memberships[1].breakEven + ' with Premium Club ($29/mo).' : memberships[2].breakEven + ' with Deluxe Club ($39/mo).'}</p>
 					<ul class="mt-4 flex-1 space-y-2">
 						{#each pkg.features as f}<li class="flex items-center gap-2 text-sm font-semibold"><Check class="h-5 w-5 shrink-0 text-sky" aria-hidden="true" /> {f}</li>{/each}
 					</ul>
@@ -43,6 +50,7 @@
 			</tbody>
 		</table>
 	</div>
+	<p class="mt-4 text-sm text-muted">{sizeUpchargeNote}</p>
 </section>
 <section class="mx-auto max-w-7xl px-4 pb-16 sm:px-6" aria-labelledby="addons-heading">
 	<h2 id="addons-heading" class="font-display text-3xl font-black text-navy">Add-Ons — Make It Yours</h2>
@@ -53,6 +61,7 @@
 				<Plus class="h-6 w-6 text-navy" aria-hidden="true" />
 				<h3 class="mt-3 font-black text-navy">{a.name}</h3>
 				<p class="mt-1 text-sm text-muted">{a.description}</p>
+				<p class="mt-2 text-sm text-muted"><em>{a.note}</em></p>
 				<p class="mt-3 font-display text-xl font-black text-navy">${a.price} <span class="text-xs font-bold text-muted">· {a.time}</span></p>
 			</article>
 		{/each}

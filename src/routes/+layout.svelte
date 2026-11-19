@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onNavigate } from '$app/navigation';
-	import { CalendarCheck, Phone } from '@lucide/svelte';
+	import { page } from '$app/state';
+	import { CalendarCheck, MapPin, Phone } from '@lucide/svelte';
 	import Footer from '#lib/components/Footer.svelte';
 	import Header from '#lib/components/Header.svelte';
 	import '#lib/../app.css';
@@ -11,6 +12,19 @@
 	import '@fontsource/inter/700.css';
 
 	let { children } = $props();
+	// Hide the sticky mobile bar while the on-screen keyboard is open
+	// (visualViewport shrinks when the keyboard appears).
+	let keyboardOpen = $state(false);
+	$effect(() => {
+		if (typeof window === 'undefined' || !window.visualViewport) return;
+		const vp = window.visualViewport;
+		const onResize = () => {
+			keyboardOpen = vp.height < window.innerHeight - 120;
+		};
+		vp.addEventListener('resize', onResize);
+		return () => vp.removeEventListener('resize', onResize);
+	});
+	const onBookPage = $derived(page.url.pathname === '/book');
 
 	onNavigate((navigation) => {
 		if (!document.startViewTransition) return;
@@ -23,45 +37,28 @@
 	});
 </script>
 
-<svelte:head>
-	<meta name="description" content="Florida Shine Car Wash — premium car wash & detailing across Florida. Wash packages from $16, Unlimited Wash Club from $19/mo, and appointments at 8 Florida locations." />
-	<meta property="og:type" content="website" />
-	<meta property="og:site_name" content="Florida Shine Car Wash" />
-	<meta property="og:title" content="Florida Shine Car Wash — Clean Car. Brighter Days." />
-	<meta property="og:description" content="Premium car wash & detailing services in Florida. Packages from $16, Unlimited Wash Club from $19/mo." />
-	<meta name="twitter:card" content="summary_large_image" />
-	<script type="application/ld+json">
-		{
-			"@context": "https://schema.org",
-			"@type": "AutoRepair",
-			"name": "Florida Shine Car Wash",
-			"description": "Premium car wash & detailing services in Florida.",
-			"telephone": "+1-305-555-0198",
-			"email": "hello@floridashinecarwash.com",
-			"priceRange": "$16 - $199",
-			"address": {
-				"@type": "PostalAddress",
-				"streetAddress": "1200 Biscayne Blvd",
-				"addressLocality": "Miami",
-				"addressRegion": "FL",
-				"postalCode": "33132",
-				"addressCountry": "US"
-			},
-			"openingHours": ["Mo-Sa 07:00-19:00", "Su 08:00-18:00"]
-		}
-	</script>
-</svelte:head>
+<a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-sun focus:px-5 focus:py-3 focus:font-black focus:text-navy">
+	Skip to content
+</a>
 
 <Header />
 <main id="main">{@render children()}</main>
-<Footer />
+<div class="pb-20 sm:pb-0"><Footer /></div>
 
-<!-- Sticky mobile Book / Call bar -->
-<div class="fixed inset-x-0 bottom-0 z-50 grid grid-cols-2 gap-2 border-t border-navy/10 bg-white/95 p-2 backdrop-blur sm:hidden">
-	<a href="tel:+13055550198" class="flex min-h-12 items-center justify-center gap-2 rounded-full border-2 border-navy font-black text-navy">
-		<Phone class="h-5 w-5" aria-hidden="true" /> Call
-	</a>
-	<a href="/book" class="flex min-h-12 items-center justify-center gap-2 rounded-full bg-sun font-black text-navy">
-		<CalendarCheck class="h-5 w-5" aria-hidden="true" /> Book Now
-	</a>
-</div>
+<!-- Sticky mobile Call / Book bar (hidden while the on-screen keyboard is open) -->
+{#if !keyboardOpen}
+	<div class="fixed inset-x-0 bottom-0 z-50 grid grid-cols-2 gap-2 border-t border-navy/10 bg-white/95 p-2 backdrop-blur sm:hidden">
+		<a href="tel:+13055550198" class="flex min-h-12 items-center justify-center gap-2 rounded-full border-2 border-navy font-black text-navy">
+			<Phone class="h-5 w-5" aria-hidden="true" /> Call
+		</a>
+		{#if onBookPage}
+			<a href="/locations" class="flex min-h-12 items-center justify-center gap-2 rounded-full bg-sun font-black text-navy">
+				<MapPin class="h-5 w-5" aria-hidden="true" /> Find a Location
+			</a>
+		{:else}
+			<a href="/book" class="flex min-h-12 items-center justify-center gap-2 rounded-full bg-sun font-black text-navy">
+				<CalendarCheck class="h-5 w-5" aria-hidden="true" /> Book Now
+			</a>
+		{/if}
+	</div>
+{/if}

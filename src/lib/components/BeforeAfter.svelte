@@ -2,7 +2,7 @@
 	import Picture from '#lib/components/Picture.svelte';
 	import { ChevronsLeftRight } from '@lucide/svelte';
 
-	let { image, alt, title }: { image: string; alt: string; title: string } = $props();
+	let { image, alt, title, beforeImage, caption }: { image: string; alt: string; title: string; beforeImage?: string; caption?: string } = $props();
 	let pos = $state(50);
 	let slider: HTMLInputElement | undefined = $state();
 
@@ -22,10 +22,14 @@
 			<Picture src={image} {alt} width={1200} height={800} sizes="(max-width: 640px) 100vw, 800px" class="h-full w-full" />
 			<span class="absolute right-3 top-3 rounded-full bg-sun px-3 py-1 text-xs font-black text-navy">AFTER</span>
 		</div>
-		<!-- Before (dull, grayscale) — same photo, labelled mock preview -->
+		<!-- Before: a genuinely dirty car photo when beforeImage is given; otherwise the same photo, dull-filtered -->
 		<div class="absolute inset-0 overflow-hidden" style="width: {pos}%">
 			<div class="absolute inset-0" style="width: {100 / (pos / 100 || 1)}%">
-				<Picture src={image} alt={`Before: ${alt}`} width={1200} height={800} sizes="(max-width: 640px) 100vw, 800px" class="h-full w-full grayscale brightness-[0.72] contrast-[0.85] sepia-[0.25]" />
+				{#if beforeImage}
+					<Picture src={beforeImage} alt={`Before: ${alt}`} width={1200} height={800} sizes="(max-width: 640px) 100vw, 800px" class="h-full w-full" />
+				{:else}
+					<Picture src={image} alt={`Before: ${alt}`} width={1200} height={800} sizes="(max-width: 640px) 100vw, 800px" class="h-full w-full grayscale brightness-[0.72] contrast-[0.85] sepia-[0.25]" />
+				{/if}
 			</div>
 			<span class="absolute left-3 top-3 rounded-full bg-navy px-3 py-1 text-xs font-black text-white">BEFORE</span>
 		</div>
@@ -49,6 +53,7 @@
 		/>
 	</div>
 	<figcaption class="bg-white px-4 py-3 text-sm text-muted">
-		<strong class="text-navy">{title}</strong> — drag the slider (or use arrow keys) to compare. The "before" view is the same photo with a dull filter applied — a mock preview.
+		<strong class="text-navy">{title}</strong> — drag the slider (or use arrow keys) to compare. {caption ??
+			'The "before" view is the same photo with a dull filter applied — a mock preview.'}
 	</figcaption>
 </figure>

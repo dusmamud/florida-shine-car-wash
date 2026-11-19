@@ -4,15 +4,38 @@
 	import FloridaMap from '#lib/components/FloridaMap.svelte';
 	import Picture from '#lib/components/Picture.svelte';
 	import Reveal from '#lib/components/Reveal.svelte';
-	import { gallery, packages, reviews, site, trustItems, whyItems } from '#lib/data/site.ts';
+	import Seo from '#lib/components/Seo.svelte';
+	import { beforeAfter, gallery, packages, ratingSummary, reviews, site, trustItems, whyItems } from '#lib/data/site.ts';
 
 	const icons: Record<string, typeof Droplets> = { Droplets, ShieldCheck, Timer, BadgeCheck, Sun, Users, MapPin };
+	const orgJsonLd = {
+		'@context': 'https://schema.org',
+		'@type': 'Organization',
+		name: 'Florida Shine Car Wash',
+		description: 'Premium car wash & detailing services in Florida.',
+		telephone: '+1-305-555-0198',
+		email: 'hello@floridashinecarwash.com',
+		logo: 'https://florida-shine-car-wash.pages.dev/images/hero-soapy-car-1200.jpg',
+		sameAs: site.socials.map((s) => s.href),
+		address: {
+			'@type': 'PostalAddress',
+			streetAddress: '1200 Biscayne Blvd',
+			addressLocality: 'Miami',
+			addressRegion: 'FL',
+			postalCode: '33132',
+			addressCountry: 'US'
+		},
+		contactPoint: { '@type': 'ContactPoint', telephone: '+1-305-555-0198', contactType: 'customer service' }
+	};
 </script>
 
-<svelte:head>
-	<title>Florida Shine Car Wash — Clean Car. Brighter Days.</title>
-	<meta name="description" content="Premium car wash & detailing services in Florida. Wash packages from $16, Unlimited Wash Club from $19/mo, 8 locations from Miami to Tampa." />
-</svelte:head>
+<Seo
+	title="Florida Shine Car Wash — Clean Car. Brighter Days."
+	description="Premium car wash & detailing across Florida. Wash packages from $16, Unlimited Wash Club from $19/mo, 8 locations from Miami to Tampa. 4.8 out of 5 from 2,400+ Google reviews."
+	canonical="/"
+	ogImage="hero-soapy-car"
+	jsonLd={orgJsonLd}
+/>
 
 <!-- HERO -->
 <section class="relative overflow-hidden bg-navy text-white">
@@ -35,7 +58,7 @@
 		</div>
 		<p class="mt-6 flex items-center gap-2 text-sm text-white/80">
 			<span class="flex text-sun" aria-hidden="true"><Star class="h-4 w-4 fill-current" /><Star class="h-4 w-4 fill-current" /><Star class="h-4 w-4 fill-current" /><Star class="h-4 w-4 fill-current" /><Star class="h-4 w-4 fill-current" /></span>
-			Loved by Florida drivers — 4.9 out of 5 from 2,400+ mock reviews
+			Loved by Florida drivers — {ratingSummary.average} out of 5 from {ratingSummary.totalReviews.toLocaleString('en-US')}+ {ratingSummary.source}
 		</p>
 	</div>
 </section>
@@ -46,7 +69,7 @@
 		{#each trustItems as item}
 			<div class="flex flex-col items-center bg-white px-4 py-6 text-center">
 				<svelte:component this={icons[item.icon]} class="h-8 w-8 text-navy" aria-hidden="true" />
-				<h2 class="mt-3 text-sm font-black tracking-wide text-navy">{item.title}</h2>
+				<p class="mt-3 text-sm font-black tracking-wide text-navy"><strong>{item.title}</strong></p>
 				<p class="mt-1 text-xs leading-relaxed text-muted">{item.text}</p>
 			</div>
 		{/each}
@@ -80,7 +103,7 @@
 					{/each}
 				</ul>
 				<a href="/book?package={pkg.slug}" class="mt-6 inline-flex min-h-12 items-center justify-center rounded-full px-6 py-3 text-sm font-black {pkg.popular ? 'bg-sun text-navy' : 'bg-sky-light text-navy'} transition-transform hover:-translate-y-0.5">GET STARTED</a>
-				<a href="/packages/{pkg.slug}" class="mt-2 text-center text-sm font-bold text-navy-light underline-offset-2 hover:underline">See full details</a>
+				<a href="/packages/{pkg.slug}" class="mt-2 inline-flex min-h-11 items-center justify-center text-center text-sm font-bold text-navy-light underline-offset-2 hover:underline">See full details</a>
 			</article>
 		{/each}
 	</div>
@@ -135,7 +158,7 @@
 		<h2 id="ba-heading" class="text-center font-display text-3xl font-black text-navy sm:text-4xl">SEE THE SHINE</h2>
 		<p class="mx-auto mt-3 max-w-xl text-center text-muted">Drag the slider to see the difference a Florida Shine wash makes.</p>
 		<div class="mx-auto mt-8 max-w-3xl">
-			<BeforeAfter image="hero-soapy-car" alt="Dark blue sports car covered in white soap foam at a Florida car wash" title="Triple foam wash" />
+			<BeforeAfter image={beforeAfter.after} beforeImage={beforeAfter.before} alt="Dark blue sports car covered in white soap foam at a Florida car wash" title="Triple foam wash" caption={beforeAfter.caption} />
 		</div>
 		<p class="mt-6 text-center"><a href="/gallery" class="inline-flex min-h-12 items-center gap-2 rounded-full bg-navy px-6 py-3 font-black text-white">View the full gallery <ArrowRight class="h-5 w-5" aria-hidden="true" /></a></p>
 	</Reveal>
@@ -176,7 +199,7 @@
 			</blockquote>
 		{/each}
 	</div>
-	<p class="mt-6 text-center"><a href="/reviews" class="font-bold text-navy-light underline-offset-2 hover:underline">Read all reviews →</a></p>
+	<p class="mt-6 text-center"><a href="/reviews" class="inline-flex min-h-11 items-center font-bold text-navy-light underline-offset-2 hover:underline">Read all reviews →</a></p>
 </section>
 
 <!-- CTA -->

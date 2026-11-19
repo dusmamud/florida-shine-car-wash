@@ -2,9 +2,15 @@
 	import { ArrowRight, Check } from '@lucide/svelte';
 	import PageHero from '#lib/components/PageHero.svelte';
 	import Picture from '#lib/components/Picture.svelte';
+	import Seo from '#lib/components/Seo.svelte';
 	import { services } from '#lib/data/site.ts';
 </script>
-<svelte:head><title>Services — Florida Shine Car Wash</title></svelte:head>
+<Seo
+	title="Services — Florida Shine Car Wash"
+	description="Car wash & detailing services across Florida: exterior wash from $16, interior detailing from $45, ceramic coating from $199, wax & polish, wheel care and pet hair removal."
+	canonical="/services"
+	ogImage="foam-wash"
+/>
 <PageHero eyebrow="WHAT WE DO" title="Car Wash & Detailing Services" subtitle="From a quick 10-minute wash to a full ceramic coating — every service is done by local Florida experts with paint-safe products and eco-friendly water systems." />
 <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6">
 	<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

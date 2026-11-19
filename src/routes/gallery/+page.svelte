@@ -2,13 +2,19 @@
 	import BeforeAfter from '#lib/components/BeforeAfter.svelte';
 	import PageHero from '#lib/components/PageHero.svelte';
 	import Picture from '#lib/components/Picture.svelte';
-	import { gallery } from '#lib/data/site.ts';
+	import Seo from '#lib/components/Seo.svelte';
+	import { beforeAfter, gallery } from '#lib/data/site.ts';
 	let filter = $state('All');
 	const categories = ['All', ...new Set(gallery.map((g) => g.category))];
 	const shown = $derived(filter === 'All' ? gallery : gallery.filter((g) => g.category === filter));
 </script>
 
-<svelte:head><title>Gallery — Florida Shine Car Wash</title></svelte:head>
+<Seo
+	title="Gallery — Florida Shine Car Wash"
+	description="See the Florida Shine difference: foam baths, hand wax, ceramic beading and spotless interiors from our Florida washes — plus a real before-and-after comparison."
+	canonical="/gallery"
+	ogImage="gallery-sedan"
+/>
 <PageHero eyebrow="THE SHINE, UP CLOSE" title="Gallery" subtitle="Real results from our Florida washes — foam baths, hand wax, ceramic beading and interiors that look brand new." />
 
 <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6">
@@ -33,7 +39,7 @@
 
 <section class="mx-auto max-w-3xl px-4 pb-16 sm:px-6">
 	<h2 class="text-center font-display text-3xl font-black text-navy">Before &amp; After</h2>
-	<p class="mt-2 text-center text-muted">Drag the slider — or use the arrow keys — to compare. The "before" view is the same photo with a dull filter applied, a mock preview.</p>
-	<div class="mt-6"><BeforeAfter image="gallery-sedan" alt="Freshly washed red sedan gleaming in the sun" title="Wax & polish on a red sedan" /></div>
+	<p class="mt-2 text-center text-muted">Drag the slider — or use the arrow keys — to compare. {beforeAfter.caption}</p>
+	<div class="mt-6"><BeforeAfter image={beforeAfter.after} beforeImage={beforeAfter.before} alt="Dark blue sports car covered in white soap foam at a Florida car wash" title="Triple foam wash" caption={beforeAfter.caption} /></div>
 	<div class="mt-6"><BeforeAfter image="interior-detail" alt="Spotless car interior being detailed" title="Interior detail" /></div>
 </section>
