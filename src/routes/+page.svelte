@@ -1,0 +1,192 @@
+<script lang="ts">
+	import { ArrowRight, BadgeCheck, Check, Droplets, MapPin, ShieldCheck, Star, Sun, Timer, Users } from '@lucide/svelte';
+	import BeforeAfter from '#lib/components/BeforeAfter.svelte';
+	import FloridaMap from '#lib/components/FloridaMap.svelte';
+	import Picture from '#lib/components/Picture.svelte';
+	import Reveal from '#lib/components/Reveal.svelte';
+	import { gallery, packages, reviews, site, trustItems, whyItems } from '#lib/data/site.ts';
+
+	const icons: Record<string, typeof Droplets> = { Droplets, ShieldCheck, Timer, BadgeCheck, Sun, Users, MapPin };
+</script>
+
+<svelte:head>
+	<title>Florida Shine Car Wash — Clean Car. Brighter Days.</title>
+	<meta name="description" content="Premium car wash & detailing services in Florida. Wash packages from $16, Unlimited Wash Club from $19/mo, 8 locations from Miami to Tampa." />
+</svelte:head>
+
+<!-- HERO -->
+<section class="relative overflow-hidden bg-navy text-white">
+	<div class="absolute inset-0" aria-hidden="true">
+		<Picture src="hero-soapy-car" alt="" width={1600} height={1000} sizes="100vw" eager class="h-full w-full opacity-40" />
+		<div class="absolute inset-0 bg-gradient-to-r from-navy via-navy/80 to-navy/20"></div>
+	</div>
+	<div class="relative mx-auto max-w-7xl px-4 pb-24 pt-16 sm:px-6 sm:pt-24">
+		<h1 class="max-w-2xl font-display text-5xl font-black leading-[0.95] tracking-tight sm:text-7xl">
+			CLEAN CAR.<br />BRIGHTER DAYS.<br /><span class="text-sun">FLORIDA</span><br />SHINES.
+		</h1>
+		<p class="mt-5 max-w-md text-lg leading-relaxed text-white/90">Premium car wash &amp; detailing services in Florida.</p>
+		<div class="mt-8 flex flex-wrap gap-3">
+			<a href="/packages" class="inline-flex min-h-12 items-center gap-2 rounded-full bg-sun px-6 py-3 font-black text-navy shadow-lg transition-transform hover:-translate-y-0.5">
+				VIEW PACKAGES <ArrowRight class="h-5 w-5" aria-hidden="true" />
+			</a>
+			<a href="/locations" class="inline-flex min-h-12 items-center gap-2 rounded-full border-2 border-white px-6 py-3 font-black text-white transition-colors hover:bg-white/10">
+				<MapPin class="h-5 w-5" aria-hidden="true" /> FIND A LOCATION
+			</a>
+		</div>
+		<p class="mt-6 flex items-center gap-2 text-sm text-white/80">
+			<span class="flex text-sun" aria-hidden="true"><Star class="h-4 w-4 fill-current" /><Star class="h-4 w-4 fill-current" /><Star class="h-4 w-4 fill-current" /><Star class="h-4 w-4 fill-current" /><Star class="h-4 w-4 fill-current" /></span>
+			Loved by Florida drivers — 4.9 out of 5 from 2,400+ mock reviews
+		</p>
+	</div>
+</section>
+
+<!-- TRUST STRIP -->
+<section class="relative z-10 mx-auto -mt-12 max-w-7xl px-4 sm:px-6" aria-label="Why trust Florida Shine">
+	<div class="grid grid-cols-2 gap-px overflow-hidden rounded-3xl bg-line shadow-xl shadow-navy/10 lg:grid-cols-4">
+		{#each trustItems as item}
+			<div class="flex flex-col items-center bg-white px-4 py-6 text-center">
+				<svelte:component this={icons[item.icon]} class="h-8 w-8 text-navy" aria-hidden="true" />
+				<h2 class="mt-3 text-sm font-black tracking-wide text-navy">{item.title}</h2>
+				<p class="mt-1 text-xs leading-relaxed text-muted">{item.text}</p>
+			</div>
+		{/each}
+	</div>
+</section>
+
+<!-- PACKAGES -->
+<section class="mx-auto max-w-7xl px-4 py-16 sm:px-6" aria-labelledby="packages-heading">
+	<Reveal>
+		<p class="text-center text-xs font-black tracking-[0.3em] text-navy-light">— CHOOSE YOUR SHINE —</p>
+		<h2 id="packages-heading" class="mt-2 text-center font-display text-4xl font-black text-navy sm:text-5xl">WASH PACKAGES</h2>
+		<p class="mx-auto mt-3 max-w-xl text-center text-muted">Every wash includes our soft-touch foam, spot-free rinse and a smile. Upgrade anytime at the wash.</p>
+	</Reveal>
+	<div class="mt-10 grid gap-6 md:grid-cols-3">
+		{#each packages as pkg}
+			<article class="relative flex flex-col rounded-3xl bg-white p-6 shadow-lg shadow-navy/10 ring-1 ring-line {pkg.popular ? 'ring-2 ring-sun md:-translate-y-2' : ''}">
+				{#if pkg.popular}
+					<span class="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-sun px-4 py-1 text-xs font-black text-navy">MOST POPULAR</span>
+				{/if}
+				<div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full {pkg.popular ? 'bg-navy text-sun' : 'bg-sky-light text-navy'}" aria-hidden="true">
+					<svg viewBox="0 0 24 24" class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 16l1.5-5A2 2 0 0 1 8.4 9.5h7.2a2 2 0 0 1 1.9 1.5L19 16" /><path d="M4 16h16v3.5H4z" /><circle cx="7.5" cy="19.5" r="1.4" /><circle cx="16.5" cy="19.5" r="1.4" /><path d="M7 12h2M15 12h2" /></svg>
+				</div>
+				<h3 class="mt-4 text-center font-display text-2xl font-black tracking-wide text-navy">{pkg.name.toUpperCase()}</h3>
+				<p class="mt-1 text-center text-sm text-muted">{pkg.tagline}</p>
+				<p class="mt-3 text-center font-display text-4xl font-black text-navy">${pkg.price}</p>
+				<ul class="mt-5 flex-1 space-y-2.5">
+					{#each pkg.features as f}
+						<li class="flex items-center justify-between gap-2 text-sm font-semibold text-ink">
+							<span>{f.toUpperCase()}</span><Check class="h-5 w-5 shrink-0 text-sky" aria-hidden="true" />
+						</li>
+					{/each}
+				</ul>
+				<a href="/book?package={pkg.slug}" class="mt-6 inline-flex min-h-12 items-center justify-center rounded-full px-6 py-3 text-sm font-black {pkg.popular ? 'bg-sun text-navy' : 'bg-sky-light text-navy'} transition-transform hover:-translate-y-0.5">GET STARTED</a>
+				<a href="/packages/{pkg.slug}" class="mt-2 text-center text-sm font-bold text-navy-light underline-offset-2 hover:underline">See full details</a>
+			</article>
+		{/each}
+	</div>
+	<p class="mt-6 text-center"><a href="/packages" class="inline-flex min-h-12 items-center gap-2 rounded-full border-2 border-navy px-6 py-3 font-black text-navy">Compare all packages &amp; add-ons <ArrowRight class="h-5 w-5" aria-hidden="true" /></a></p>
+</section>
+
+<!-- UNLIMITED WASH CLUB -->
+<section class="mx-auto max-w-7xl px-4 sm:px-6" aria-labelledby="club-heading">
+	<Reveal>
+		<div class="grid overflow-hidden rounded-3xl bg-navy text-white shadow-xl shadow-navy/20 md:grid-cols-2">
+			<Picture src="club-car" alt="Clean dark blue sedan driving away from a Florida Shine car wash" width={1200} height={800} sizes="(max-width: 768px) 100vw, 50vw" class="h-56 w-full md:h-full" />
+			<div class="relative flex flex-col justify-center p-6 sm:p-10">
+				<h2 id="club-heading" class="font-display text-3xl font-black sm:text-4xl">UNLIMITED <span class="text-sun">WASH CLUB</span></h2>
+				<p class="mt-2 text-lg font-bold">Wash as often as you want!</p>
+				<ul class="mt-4 space-y-2">
+					{#each ['Unlimited washes', 'Cancel anytime', 'Exclusive member perks'] as perk}
+						<li class="flex items-center gap-2"><span class="flex h-6 w-6 items-center justify-center rounded-full bg-sun text-navy"><Check class="h-4 w-4" aria-hidden="true" /></span>{perk}</li>
+					{/each}
+				</ul>
+				<div class="mt-6 flex flex-wrap items-center gap-4">
+					<a href="/memberships" class="inline-flex min-h-12 items-center rounded-full bg-white px-6 py-3 font-black text-navy">JOIN NOW</a>
+					<span class="flex h-24 w-24 flex-col items-center justify-center rounded-full bg-sun text-center font-black text-navy shadow-lg">
+						<span class="text-[0.6rem] tracking-wide">STARTING AT</span>
+						<span class="text-2xl leading-none">$19</span>
+						<span class="text-[0.6rem]">/MO</span>
+					</span>
+				</div>
+			</div>
+		</div>
+	</Reveal>
+</section>
+
+<!-- WHY US -->
+<section class="mx-auto max-w-7xl px-4 py-16 sm:px-6" aria-labelledby="why-heading">
+	<Reveal>
+		<h2 id="why-heading" class="text-center font-display text-3xl font-black text-navy sm:text-4xl">WHY FLORIDA DRIVERS CHOOSE US</h2>
+	</Reveal>
+	<div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+		{#each whyItems as item}
+			<div class="rounded-3xl bg-white p-6 text-center shadow-md shadow-navy/5 ring-1 ring-line">
+				<svelte:component this={icons[item.icon]} class="mx-auto h-9 w-9 text-navy" aria-hidden="true" />
+				<h3 class="mt-3 text-sm font-black tracking-wide text-navy">{item.title}</h3>
+				<p class="mt-2 text-sm leading-relaxed text-muted">{item.text}</p>
+			</div>
+		{/each}
+	</div>
+</section>
+
+<!-- BEFORE / AFTER -->
+<section class="mx-auto max-w-7xl px-4 pb-16 sm:px-6" aria-labelledby="ba-heading">
+	<Reveal>
+		<h2 id="ba-heading" class="text-center font-display text-3xl font-black text-navy sm:text-4xl">SEE THE SHINE</h2>
+		<p class="mx-auto mt-3 max-w-xl text-center text-muted">Drag the slider to see the difference a Florida Shine wash makes.</p>
+		<div class="mx-auto mt-8 max-w-3xl">
+			<BeforeAfter image="hero-soapy-car" alt="Dark blue sports car covered in white soap foam at a Florida car wash" title="Triple foam wash" />
+		</div>
+		<p class="mt-6 text-center"><a href="/gallery" class="inline-flex min-h-12 items-center gap-2 rounded-full bg-navy px-6 py-3 font-black text-white">View the full gallery <ArrowRight class="h-5 w-5" aria-hidden="true" /></a></p>
+	</Reveal>
+</section>
+
+<!-- LOCATIONS -->
+<section class="bg-white py-16" aria-labelledby="loc-heading">
+	<div class="mx-auto grid max-w-7xl items-center gap-8 px-4 sm:px-6 lg:grid-cols-2">
+		<Reveal>
+			<FloridaMap />
+		</Reveal>
+		<div>
+			<p class="text-xs font-black tracking-[0.3em] text-navy-light">CLOSE TO YOU</p>
+			<h2 id="loc-heading" class="mt-2 font-display text-4xl font-black text-navy sm:text-5xl">FIND A LOCATION NEAR YOU</h2>
+			<p class="mt-4 max-w-md text-lg text-muted">From Miami to Tampa, we're here to keep Florida shining.</p>
+			<p class="mt-3 text-muted">8 locations across Florida — open 7 days a week, with free vacuums and friendly local teams at every wash.</p>
+			<div class="mt-6 flex flex-wrap gap-3">
+				<a href="/locations" class="inline-flex min-h-12 items-center gap-2 rounded-full bg-sun px-6 py-3 font-black text-navy">VIEW ALL LOCATIONS <ArrowRight class="h-5 w-5" aria-hidden="true" /></a>
+				<a href="/book" class="inline-flex min-h-12 items-center rounded-full border-2 border-navy px-6 py-3 font-black text-navy">Book an Appointment</a>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- REVIEWS PREVIEW -->
+<section class="mx-auto max-w-7xl px-4 py-16 sm:px-6" aria-labelledby="rev-heading">
+	<Reveal>
+		<h2 id="rev-heading" class="text-center font-display text-3xl font-black text-navy sm:text-4xl">FLORIDA DRIVERS LOVE THE SHINE</h2>
+	</Reveal>
+	<div class="mt-8 grid gap-6 md:grid-cols-3">
+		{#each reviews.slice(0, 3) as r}
+			<blockquote class="rounded-3xl bg-white p-6 shadow-md shadow-navy/5 ring-1 ring-line">
+				<p class="flex gap-0.5 text-sun" aria-label="{r.rating} out of 5 stars">
+					{#each Array(r.rating) as _}<Star class="h-4 w-4 fill-current" aria-hidden="true" />{/each}
+				</p>
+				<p class="mt-3 leading-relaxed text-ink">"{r.text}"</p>
+				<footer class="mt-4 text-sm"><strong class="text-navy">{r.name}</strong> <span class="text-muted">· {r.city} · {r.service}</span></footer>
+			</blockquote>
+		{/each}
+	</div>
+	<p class="mt-6 text-center"><a href="/reviews" class="font-bold text-navy-light underline-offset-2 hover:underline">Read all reviews →</a></p>
+</section>
+
+<!-- CTA -->
+<section class="mx-auto max-w-7xl px-4 pb-20 sm:px-6">
+	<div class="rounded-3xl bg-sun px-6 py-10 text-center text-navy shadow-xl sm:px-12">
+		<h2 class="font-display text-3xl font-black sm:text-4xl">READY TO SHINE?</h2>
+		<p class="mx-auto mt-3 max-w-lg">Book a wash or detail in under two minutes — or just drive in. Your car will thank you.</p>
+		<div class="mt-6 flex flex-wrap justify-center gap-3">
+			<a href="/book" class="inline-flex min-h-12 items-center rounded-full bg-navy px-8 py-3 font-black text-white">BOOK AN APPOINTMENT</a>
+			<a href={site.phoneHref} class="inline-flex min-h-12 items-center rounded-full border-2 border-navy px-8 py-3 font-black text-navy">CALL {site.phone}</a>
+		</div>
+	</div>
+</section>

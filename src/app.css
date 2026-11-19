@@ -1,0 +1,119 @@
+@import "tailwindcss";
+
+@theme {
+	--font-display: "Archivo", "Inter", ui-sans-serif, system-ui, sans-serif;
+	--font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+	--color-navy: #0a2a5e;
+	--color-navy-deep: #071f45;
+	--color-navy-light: #123a7d;
+	--color-sun: #ffc700;
+	--color-sun-dark: #e6b300;
+	--color-sky: #7ec8f7;
+	--color-sky-light: #e8f3fc;
+	--color-foam: #f4fafe;
+	--color-ink: #0f1e33;
+	--color-muted: #4a5a70;
+	--color-line: #d9e6f2;
+
+	--ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	@apply bg-foam font-sans text-ink antialiased;
+	font-size: 1rem;
+}
+
+::selection {
+	background: #ffc700;
+	color: #071f45;
+}
+
+:focus-visible {
+	outline: 3px solid #ffc700;
+	outline-offset: 2px;
+	border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	::view-transition-old(root),
+	::view-transition-new(root) {
+		animation-duration: 300ms;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+/* Reveal-on-scroll: transform + opacity only */
+.reveal {
+	opacity: 0;
+	transform: translateY(16px);
+	transition:
+		opacity 300ms var(--ease-out-expo),
+		transform 300ms var(--ease-out-expo);
+}
+.reveal.is-visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+	.reveal {
+		opacity: 1;
+		transform: none;
+		transition: none;
+	}
+}
+
+/* Bubble drift for hero / foam sections */
+@keyframes float-up {
+	from {
+		transform: translateY(0);
+	}
+	to {
+		transform: translateY(-14px);
+	}
+}
+.bubble {
+	animation: float-up 4s ease-in-out infinite alternate;
+}
+@media (prefers-reduced-motion: reduce) {
+	.bubble {
+		animation: none;
+	}
+}
+
+/* Marquee: transform-only loop */
+@keyframes marquee {
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(-50%);
+	}
+}
+.marquee-track {
+	display: flex;
+	width: max-content;
+	animation: marquee 30s linear infinite;
+}
+.marquee:hover .marquee-track {
+	animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+	.marquee-track {
+		animation: none;
+	}
+}
