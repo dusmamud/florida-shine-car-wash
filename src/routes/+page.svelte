@@ -1,11 +1,55 @@
 <script lang="ts">
 	import { ArrowRight, BadgeCheck, Check, Droplets, MapPin, ShieldCheck, Star, Sun, Timer, Users } from '@lucide/svelte';
+	import { animate, press } from 'motion';
 	import BeforeAfter from '#lib/components/BeforeAfter.svelte';
+	import Counter from '#lib/components/Counter.svelte';
 	import FloridaMap from '#lib/components/FloridaMap.svelte';
 	import Picture from '#lib/components/Picture.svelte';
 	import Reveal from '#lib/components/Reveal.svelte';
 	import Seo from '#lib/components/Seo.svelte';
-	import { beforeAfter, gallery, packages, ratingSummary, reviews, site, trustItems, whyItems } from '#lib/data/site.ts';
+	import TestimonialCarousel from '#lib/components/TestimonialCarousel.svelte';
+	import { beforeAfter, gallery, locations, packages, ratingSummary, reviews, site, trustItems, whyItems } from '#lib/data/site.ts';
+
+	// Hero entrance (GSAP, home only, dynamically imported so no timeline JS
+	// ships on other pages). The hero elements do NOT use .reveal, so the
+	// gsap.from() opacity tween can never fight Reveal.svelte (Kanigiri
+	// lesson). Content is visible by default; the tween only runs in JS.
+	let heroEl: HTMLElement | undefined = $state();
+	$effect(() => {
+		if (!heroEl) return;
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+		let ctx: { revert: () => void } | undefined;
+		let cancelled = false;
+		import('gsap').then((mod) => {
+			if (cancelled) return;
+			const gsap = mod.default;
+			ctx = gsap.context(() => {
+				gsap.from('[data-hero-animate]', {
+					y: 16,
+					opacity: 0,
+					duration: 0.35,
+					stagger: 0.08,
+					ease: 'power3.out',
+					clearProps: 'all'
+				});
+			}, heroEl);
+		});
+		return () => {
+			cancelled = true;
+			ctx?.revert();
+		};
+	});
+
+	// Motion `press` micro-interaction on the hero primary CTA: a small scale
+	// dip while pressed (transform only, keyboard-accessible via Motion).
+	// Skipped entirely under reduced motion.
+	function pressScale(element: HTMLElement) {
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return () => {};
+		return press(element, () => {
+			animate(element, { scale: 0.96 }, { type: 'spring', stiffness: 500, damping: 30 });
+			return () => animate(element, { scale: 1 }, { type: 'spring', stiffness: 500, damping: 30 });
+		});
+	}
 
 	const icons: Record<string, typeof Droplets> = { Droplets, ShieldCheck, Timer, BadgeCheck, Sun, Users, MapPin };
 	const orgJsonLd = {
@@ -38,25 +82,30 @@
 />
 
 <!-- HERO -->
-<section class="relative overflow-hidden bg-navy text-white">
+<section bind:this={heroEl} class="relative overflow-hidden bg-navy text-white">
 	<div class="absolute inset-0" aria-hidden="true">
 		<Picture src="hero-soapy-car" alt="" width={1600} height={1000} sizes="100vw" eager class="h-full w-full opacity-40" />
 		<div class="absolute inset-0 bg-gradient-to-r from-navy via-navy/80 to-navy/20"></div>
+		<!-- Soap-bubble decorations (existing .bubble CSS: transform-only drift) -->
+		<span class="bubble absolute left-[8%] top-[18%] h-10 w-10 rounded-full bg-white/15" style="animation-delay: -1s"></span>
+		<span class="bubble absolute right-[12%] top-[30%] h-16 w-16 rounded-full bg-sky/25" style="animation-delay: -2.5s"></span>
+		<span class="bubble absolute bottom-[22%] right-[30%] h-6 w-6 rounded-full bg-sun/30" style="animation-delay: -0.5s"></span>
+		<span class="bubble absolute left-[38%] top-[12%] h-5 w-5 rounded-full bg-white/10" style="animation-delay: -3.5s"></span>
 	</div>
 	<div class="relative mx-auto max-w-7xl px-4 pb-24 pt-16 sm:px-6 sm:pt-24">
-		<h1 class="max-w-2xl font-display text-5xl font-black leading-[0.95] tracking-tight sm:text-7xl">
+		<h1 data-hero-animate class="max-w-2xl font-display text-5xl font-black leading-[0.95] tracking-tight sm:text-7xl">
 			CLEAN CAR.<br />BRIGHTER DAYS.<br /><span class="text-sun">FLORIDA</span><br />SHINES.
 		</h1>
-		<p class="mt-5 max-w-md text-lg leading-relaxed text-white/90">Premium car wash &amp; detailing services in Florida.</p>
-		<div class="mt-8 flex flex-wrap gap-3">
-			<a href="/packages" class="inline-flex min-h-12 items-center gap-2 rounded-full bg-sun px-6 py-3 font-black text-navy shadow-lg transition-transform hover:-translate-y-0.5">
+		<p data-hero-animate class="mt-5 max-w-md text-lg leading-relaxed text-white/90">Premium car wash &amp; detailing services in Florida.</p>
+		<div data-hero-animate class="mt-8 flex flex-wrap gap-3">
+			<a href="/packages" {@attach pressScale} class="inline-flex min-h-12 items-center gap-2 rounded-full bg-sun px-6 py-3 font-black text-navy shadow-lg transition-transform hover:-translate-y-0.5">
 				VIEW PACKAGES <ArrowRight class="h-5 w-5" aria-hidden="true" />
 			</a>
 			<a href="/locations" class="inline-flex min-h-12 items-center gap-2 rounded-full border-2 border-white px-6 py-3 font-black text-white transition-colors hover:bg-white/10">
 				<MapPin class="h-5 w-5" aria-hidden="true" /> FIND A LOCATION
 			</a>
 		</div>
-		<p class="mt-6 flex items-center gap-2 text-sm text-white/80">
+		<p data-hero-animate class="mt-6 flex items-center gap-2 text-sm text-white/80">
 			<span class="flex text-sun" aria-hidden="true"><Star class="h-4 w-4 fill-current" /><Star class="h-4 w-4 fill-current" /><Star class="h-4 w-4 fill-current" /><Star class="h-4 w-4 fill-current" /><Star class="h-4 w-4 fill-current" /></span>
 			Loved by Florida drivers — {ratingSummary.average} out of 5 from {ratingSummary.totalReviews.toLocaleString('en-US')}+ {ratingSummary.source}
 		</p>
@@ -67,12 +116,39 @@
 <section class="relative z-10 mx-auto -mt-12 max-w-7xl px-4 sm:px-6" aria-label="Why trust Florida Shine">
 	<div class="grid grid-cols-2 gap-px overflow-hidden rounded-3xl bg-line shadow-xl shadow-navy/10 lg:grid-cols-4">
 		{#each trustItems as item}
+			{@const TrustIcon = icons[item.icon]}
 			<div class="flex flex-col items-center bg-white px-4 py-6 text-center">
-				<svelte:component this={icons[item.icon]} class="h-8 w-8 text-navy" aria-hidden="true" />
+				<TrustIcon class="h-8 w-8 text-navy" aria-hidden="true" />
 				<p class="mt-3 text-sm font-black tracking-wide text-navy"><strong>{item.title}</strong></p>
 				<p class="mt-1 text-xs leading-relaxed text-muted">{item.text}</p>
 			</div>
 		{/each}
+	</div>
+</section>
+
+<!-- MARQUEE (existing .marquee/.marquee-track CSS: transform-only loop, pauses on hover) -->
+<div class="marquee mt-12 overflow-hidden bg-sun py-3" aria-hidden="true">
+	<div class="marquee-track items-center text-sm font-black tracking-[0.2em] text-navy">
+		{#each [0, 1] as _}
+			<span class="flex shrink-0 items-center gap-8 pr-8">
+				<span>FREE VACUUMS</span><span>•</span>
+				<span>SPOT-FREE RINSE</span><span>•</span>
+				<span>SOFT-TOUCH FOAM</span><span>•</span>
+				<span>RAIN-CHECK REWASH</span><span>•</span>
+				<span>OPEN 7 DAYS</span><span>•</span>
+				<span>{locations.length} FLORIDA LOCATIONS</span><span>•</span>
+			</span>
+		{/each}
+	</div>
+</div>
+
+<!-- COUNTERS — numbers from site data only: locations, Google reviews, rating, founded 2018 (team bio) -->
+<section class="mx-auto max-w-7xl px-4 pt-12 sm:px-6" aria-label="Florida Shine by the numbers">
+	<div class="grid grid-cols-2 gap-6 rounded-3xl bg-white px-4 py-8 shadow-md shadow-navy/5 ring-1 ring-line lg:grid-cols-4">
+		<Counter value={locations.length} label="LOCATIONS ACROSS FLORIDA" />
+		<Counter value={ratingSummary.totalReviews} suffix="+" label="GOOGLE REVIEWS" />
+		<Counter value={ratingSummary.average} decimals={1} label="AVERAGE RATING" />
+		<Counter value={2018} grouping={false} label="SHINING SINCE" />
 	</div>
 </section>
 
@@ -143,8 +219,9 @@
 	</Reveal>
 	<div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
 		{#each whyItems as item}
+			{@const WhyIcon = icons[item.icon]}
 			<div class="rounded-3xl bg-white p-6 text-center shadow-md shadow-navy/5 ring-1 ring-line">
-				<svelte:component this={icons[item.icon]} class="mx-auto h-9 w-9 text-navy" aria-hidden="true" />
+				<WhyIcon class="mx-auto h-9 w-9 text-navy" aria-hidden="true" />
 				<h3 class="mt-3 text-sm font-black tracking-wide text-navy">{item.title}</h3>
 				<p class="mt-2 text-sm leading-relaxed text-muted">{item.text}</p>
 			</div>
@@ -188,16 +265,8 @@
 	<Reveal>
 		<h2 id="rev-heading" class="text-center font-display text-3xl font-black text-navy sm:text-4xl">FLORIDA DRIVERS LOVE THE SHINE</h2>
 	</Reveal>
-	<div class="mt-8 grid gap-6 md:grid-cols-3">
-		{#each reviews.slice(0, 3) as r}
-			<blockquote class="rounded-3xl bg-white p-6 shadow-md shadow-navy/5 ring-1 ring-line">
-				<p class="flex gap-0.5 text-sun" aria-label="{r.rating} out of 5 stars">
-					{#each Array(r.rating) as _}<Star class="h-4 w-4 fill-current" aria-hidden="true" />{/each}
-				</p>
-				<p class="mt-3 leading-relaxed text-ink">"{r.text}"</p>
-				<footer class="mt-4 text-sm"><strong class="text-navy">{r.name}</strong> <span class="text-muted">· {r.city} · {r.service}</span></footer>
-			</blockquote>
-		{/each}
+	<div class="mx-auto mt-8 max-w-3xl min-w-0">
+		<TestimonialCarousel reviews={reviews} />
 	</div>
 	<p class="mt-6 text-center"><a href="/reviews" class="inline-flex min-h-11 items-center font-bold text-navy-light underline-offset-2 hover:underline">Read all reviews →</a></p>
 </section>

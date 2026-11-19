@@ -131,3 +131,46 @@ figure:has(input[type='range']:focus-visible) {
 		animation: none;
 	}
 }
+
+/* ── Motion round-2 (appended; no existing rule touched) ─────────────── */
+
+/* Scroll progress bar: fixed at the very top, navy → sun gradient.
+   Driven via transform: scaleX() only — never width animation. */
+.scroll-progress {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 60;
+	height: 3px;
+	width: 100%;
+	transform: scaleX(0);
+	transform-origin: 0 50%;
+	background: linear-gradient(90deg, #0a2a5e, #ffc700);
+	pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+	.scroll-progress {
+		display: none;
+	}
+}
+
+/* Sticky-header shrink: +layout.svelte toggles .header-compact on the
+   <header> after scrolling past ~80px. Padding transition only. */
+header > div {
+	transition: padding 200ms var(--ease-out-expo);
+}
+header.header-compact > div {
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
+}
+@media (prefers-reduced-motion: reduce) {
+	header > div {
+		transition: none;
+	}
+}
+
+/* Lenis smooth scroll: let Lenis own scrolling (it adds .lenis to <html>);
+   the site-wide CSS smooth scroll would fight it. */
+.lenis.lenis-smooth {
+	scroll-behavior: auto !important;
+}

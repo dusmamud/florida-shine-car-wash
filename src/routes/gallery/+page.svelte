@@ -1,5 +1,6 @@
 <script lang="ts">
 	import BeforeAfter from '#lib/components/BeforeAfter.svelte';
+	import GalleryCarousel from '#lib/components/GalleryCarousel.svelte';
 	import PageHero from '#lib/components/PageHero.svelte';
 	import Picture from '#lib/components/Picture.svelte';
 	import Seo from '#lib/components/Seo.svelte';
@@ -16,6 +17,14 @@
 	ogImage="gallery-sedan"
 />
 <PageHero eyebrow="THE SHINE, UP CLOSE" title="Gallery" subtitle="Real results from our Florida washes — foam baths, hand wax, ceramic beading and interiors that look brand new." />
+
+<section class="mx-auto max-w-7xl px-4 pt-12 sm:px-6">
+	<h2 class="font-display text-2xl font-black text-navy">HIGHLIGHTS</h2>
+	<p class="mt-1 text-muted">Swipe through the shine — the full filterable grid is below.</p>
+	<div class="mt-6 min-w-0">
+		<GalleryCarousel items={gallery} />
+	</div>
+</section>
 
 <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6">
 	<div class="flex flex-wrap gap-2" role="group" aria-label="Filter gallery by service">

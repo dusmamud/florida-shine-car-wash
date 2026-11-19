@@ -26,6 +26,69 @@
 	});
 	const onBookPage = $derived(page.url.pathname === '/book');
 
+	// Motion shell: Lenis smooth scroll + scroll progress bar + header shrink.
+	// All gated behind prefers-reduced-motion (live change listener included).
+	// Lenis is dynamically imported so no smooth-scroll JS ships at all for
+	// reduced-motion users. GSAP is deliberately NOT loaded here — it is only
+	// needed for the home hero (see +page.svelte); the progress bar and header
+	// shrink run on a plain rAF-throttled scroll listener instead.
+	let progressEl: HTMLDivElement | undefined = $state();
+	$effect(() => {
+		if (typeof window === 'undefined') return;
+		const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+		let lenis: { destroy: () => void; raf: (time: number) => void } | undefined;
+		let rafId = 0;
+		const header = document.querySelector('header');
+		let ticking = false;
+		const onScroll = () => {
+			if (ticking) return;
+			ticking = true;
+			requestAnimationFrame(() => {
+				ticking = false;
+				const max = document.documentElement.scrollHeight - window.innerHeight;
+				const p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+				// transform scaleX only — never width animation.
+				if (progressEl) progressEl.style.transform = `scaleX(${p})`;
+				header?.classList.toggle('header-compact', window.scrollY > 80);
+			});
+		};
+		const initLenis = async () => {
+			if (mq.matches) return;
+			try {
+				const { default: Lenis } = await import('lenis');
+				const instance = new Lenis({ lerp: 0.1, smoothWheel: true });
+				lenis = instance;
+				const raf = (time: number) => {
+					if (!lenis) return;
+					lenis.raf(time);
+					rafId = requestAnimationFrame(raf);
+				};
+				rafId = requestAnimationFrame(raf);
+			} catch {
+				// Smooth scroll is progressive enhancement; native scroll remains.
+			}
+		};
+		const onMotionChange = () => {
+			if (mq.matches) {
+				lenis?.destroy();
+				lenis = undefined;
+				cancelAnimationFrame(rafId);
+			} else {
+				void initLenis();
+			}
+		};
+		void initLenis();
+		mq.addEventListener('change', onMotionChange);
+		window.addEventListener('scroll', onScroll, { passive: true });
+		onScroll();
+		return () => {
+			mq.removeEventListener('change', onMotionChange);
+			window.removeEventListener('scroll', onScroll);
+			cancelAnimationFrame(rafId);
+			lenis?.destroy();
+		};
+	});
+
 	onNavigate((navigation) => {
 		if (!document.startViewTransition) return;
 		return new Promise((resolve) => {
@@ -40,6 +103,9 @@
 <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-sun focus:px-5 focus:py-3 focus:font-black focus:text-navy">
 	Skip to content
 </a>
+
+<!-- Scroll progress bar (transform scaleX only; hidden under reduced motion) -->
+<div bind:this={progressEl} class="scroll-progress" aria-hidden="true"></div>
 
 <Header />
 <main id="main">{@render children()}</main>

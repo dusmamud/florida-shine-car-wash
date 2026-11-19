@@ -27,3 +27,24 @@ Push to `main` deploys via GitHub Actions + wrangler to Cloudflare Pages
 Manual deploy: `python3 ~/workspace/custom-connectors/custom.cloudflare/bin/deploy_pages.py . florida-shine-car-wash 12194b4ebc148c425d4d2aca51befc6a main`
 
 All content is mock data in `src/lib/data/site.ts`. No payments are taken anywhere.
+
+## Motion stack
+- **Svelte built-ins first** (`svelte/transition`, `svelte/motion` `Tween` for the
+  home counters, `prefersReducedMotion` gating) — no extra JS for most motion.
+- **GSAP 3.15 + ScrollTrigger-free** — hero entrance timeline only, on the home
+  page, dynamically imported. GSAP is 100% free for commercial use since
+  v3.13 (Webflow acquisition, 29–30 April 2025) but it is **NOT open source /
+  NOT MIT**: Standard "No Charge" licence, IP remains Webflow's. Recorded here
+  because the project has no open-source-only mandate; do not re-licence it
+  as MIT.
+- **Lenis 1.3** (`lenis`, NOT the deprecated `@studio-freight/lenis`) — smooth
+  scroll, dynamically imported in `+layout.svelte`, driven by its own rAF loop.
+- **Motion 14** (`motion`, vanilla, via `{@attach}`) — press micro-interaction
+  on the hero CTA. No `framer-motion` / `motion/react` (React-only).
+- **Embla Carousel 8.6** (`embla-carousel-svelte` + `embla-carousel-autoplay`)
+  — testimonial carousel (home) and gallery carousel, autoplay 6s, swipe,
+  keyboard controls, pause on hover/focus/interaction.
+- Every JS animation is gated behind `prefers-reduced-motion` (matchMedia +
+  live change listener); autoplay is off under reduced motion and every
+  carousel has an explicit pause/play button. Scroll reveals default visible
+  (see `Reveal.svelte`) and no GSAP tween ever targets a `.reveal` element.
