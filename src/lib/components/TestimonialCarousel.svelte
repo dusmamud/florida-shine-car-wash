@@ -5,7 +5,24 @@
 	import type { EmblaCarouselType } from 'embla-carousel';
 
 	type Review = { name: string; city: string; rating: number; service: string; date: string; text: string };
-	let { reviews }: { reviews: Review[] } = $props();
+	// Optional locale labels so the Spanish pages can render Spanish aria-labels.
+	let {
+		reviews,
+		regionLabel = 'Customer reviews',
+		dotLabel = 'Testimonial',
+		prevLabel = 'Previous testimonial',
+		nextLabel = 'Next testimonial',
+		pauseLabel = 'Pause testimonial autoplay',
+		playLabel = 'Play testimonial autoplay'
+	}: {
+		reviews: Review[];
+		regionLabel?: string;
+		dotLabel?: string;
+		prevLabel?: string;
+		nextLabel?: string;
+		pauseLabel?: string;
+		playLabel?: string;
+	} = $props();
 
 	let index = $state(0);
 	let snaps = $state<number[]>([]);
@@ -67,7 +84,7 @@
 	};
 </script>
 
-<div class="min-w-0" role="region" aria-roledescription="carousel" aria-label="Customer reviews">
+<div class="min-w-0" role="region" aria-roledescription="carousel" aria-label={regionLabel}>
 	<div
 		class="min-w-0 overflow-hidden rounded-3xl bg-white ring-1 ring-line"
 		use:emblaCarouselSvelte={{ options: { loop: true }, plugins }}
@@ -96,10 +113,15 @@
 				<button
 					type="button"
 					onclick={() => goTo(i)}
-					aria-label="Testimonial {i + 1} of {snaps.length}"
+					aria-label="{dotLabel} {i + 1} of {snaps.length}"
 					aria-current={index === i}
-					class="h-3 min-h-3 rounded-full transition-all duration-200 {index === i ? 'w-8 bg-navy' : 'w-3 bg-line hover:bg-sky'}"
-				></button>
+					class="group flex h-6 min-h-6 w-6 min-w-6 items-center justify-center"
+				>
+					<span
+						class="block h-3 rounded-full transition-all duration-200 {index === i ? 'w-8 bg-navy' : 'w-3 bg-line group-hover:bg-sky'}"
+						aria-hidden="true"
+					></span>
+				</button>
 			{/each}
 		</div>
 		<div class="flex shrink-0 items-center gap-2">
@@ -107,7 +129,7 @@
 				<button
 					type="button"
 					onclick={() => (paused = !paused)}
-					aria-label={paused ? 'Play testimonial autoplay' : 'Pause testimonial autoplay'}
+					aria-label={paused ? playLabel : pauseLabel}
 					class="flex h-12 w-12 items-center justify-center rounded-full border-2 border-navy text-navy transition-colors hover:bg-sky-light"
 				>
 					{#if paused}<Play class="h-5 w-5" aria-hidden="true" />{:else}<Pause class="h-5 w-5" aria-hidden="true" />{/if}
@@ -116,7 +138,7 @@
 			<button
 				type="button"
 				onclick={prev}
-				aria-label="Previous testimonial"
+				aria-label={prevLabel}
 				class="flex h-12 w-12 items-center justify-center rounded-full border-2 border-navy text-navy transition-colors hover:bg-sky-light"
 			>
 				<ChevronLeft class="h-5 w-5" aria-hidden="true" />
@@ -124,7 +146,7 @@
 			<button
 				type="button"
 				onclick={next}
-				aria-label="Next testimonial"
+				aria-label={nextLabel}
 				class="flex h-12 w-12 items-center justify-center rounded-full border-2 border-navy text-navy transition-colors hover:bg-sky-light"
 			>
 				<ChevronRight class="h-5 w-5" aria-hidden="true" />

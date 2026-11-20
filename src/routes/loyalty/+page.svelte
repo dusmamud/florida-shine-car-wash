@@ -53,7 +53,7 @@
 		<div class="mt-4 grid gap-4 md:grid-cols-2">
 			<div class="rounded-2xl bg-mist p-5">
 				<h3 class="font-black text-navy">Shine Rewards — wash occasionally</h3>
-				<p class="mt-1 text-sm leading-relaxed text-muted">Pay per wash, collect stamps, and get a free Basic Wash every 8th wash. Best if you wash a few times a month.</p>
+				<p class="mt-1 text-sm leading-relaxed text-muted">Pay per wash, collect stamps, and get a free Basic Wash every 8th wash. Best if you wash once a month or less — wash twice a month or more and the Club is cheaper.</p>
 			</div>
 			<div class="rounded-2xl bg-mist p-5">
 				<h3 class="font-black text-navy">Unlimited Wash Club — wash often</h3>

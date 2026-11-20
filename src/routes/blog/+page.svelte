@@ -3,6 +3,10 @@
 	import Picture from '#lib/components/Picture.svelte';
 	import Seo from '#lib/components/Seo.svelte';
 	import { blogPosts } from '#lib/data/site.ts';
+	import { round3BlogPosts } from '#lib/data/round3.ts';
+
+	// Round-3 (Worker B): the 2 new posts live in round3.ts, not site.ts.
+	const allPosts = [...blogPosts, ...round3BlogPosts];
 
 	const jsonLd = {
 		'@context': 'https://schema.org',
@@ -16,7 +20,7 @@
 
 <Seo
 	title="Blog — Car Care Tips — Florida Shine Car Wash"
-	description="Florida car care tips from Florida Shine: love bug season paint protection, salt air and hard water care, and honest ceramic coating aftercare."
+	description="Florida car care tips from Florida Shine: love bug season paint protection, salt air and hard water care, honest ceramic coating aftercare, hurricane prep and rainy-season care."
 	canonical="/blog"
 	ogImage="blog-lovebugs"
 	jsonLd={jsonLd}
@@ -29,7 +33,7 @@
 
 <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6">
 	<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-		{#each blogPosts as post}
+		{#each allPosts as post}
 			<article class="flex flex-col overflow-hidden rounded-3xl bg-white shadow ring-1 ring-line">
 				<a href="/blog/{post.slug}" class="block" aria-label={post.title}>
 					<Picture src={post.image} alt={post.title} width={1200} height={800} class="block aspect-[3/2]" />

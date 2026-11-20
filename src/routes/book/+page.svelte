@@ -1,15 +1,16 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { ArrowLeft, ArrowRight, CalendarCheck, Check, MapPin } from '@lucide/svelte';
+	import { ArrowLeft, ArrowRight, CalendarCheck, Check, MapPin, Wallet } from '@lucide/svelte';
+	import FitChecker from '#lib/components/FitChecker.svelte';
 	import PageHero from '#lib/components/PageHero.svelte';
 	import Seo from '#lib/components/Seo.svelte';
-	import { addons, bookingRef, locations, packages, services, sizeUpcharges, sizeUpchargeNote, slotAvailable, timeSlots } from '#lib/data/site.ts';
+	import { addons, bookingRef, locations, packages, reviewSources, services, sizeUpcharges, sizeUpchargeNote, slotAvailable, timeSlots } from '#lib/data/site.ts';
 
 	let step = $state(1);
 	let choice = $state('package:premium-wash');
 	let locationSlug = $state('miami-downtown');
 
-	// Query params (?package= / ?service= / ?location=) are read on the client only —
+	// Query params (?package= / ?service= / ?location= / ?promo=) are read on the client only —
 	// searchParams are unavailable during prerender.
 	$effect(() => {
 		const params = page.url.searchParams;
@@ -19,6 +20,13 @@
 		if (pkg && packages.some((p) => p.slug === pkg)) choice = `package:${pkg}`;
 		else if (svc && services.some((s) => s.slug === svc)) choice = `service:${svc}`;
 		if (loc && locations.some((l) => l.slug === loc)) locationSlug = loc;
+		// ?promo=SHINEFREE (from the offers page) preselects a Basic Wash and applies the code.
+		if (params.get('promo')?.toUpperCase() === 'SHINEFREE') {
+			choice = 'package:basic-wash';
+			promoCode = 'SHINEFREE';
+			promoApplied = true;
+			promoMsg = 'SHINEFREE applied — your first Basic Wash is $0.';
+		}
 	});
 	let dateISO = $state('');
 	let slot = $state('');
@@ -32,6 +40,15 @@
 	let selectedAddons = $state<string[]>([]);
 	let done = $state(false);
 	let errorMsg = $state('');
+
+	// Promo code (P1-6): SHINEFREE makes a first Basic Wash $0, online or in person.
+	let promoCode = $state('');
+	let promoApplied = $state(false);
+	let promoMsg = $state('');
+	// Mock payment method — no real payment is taken anywhere on this site.
+	let payMethod = $state('Pay at the wash');
+
+	const isBasic = $derived(choice === 'package:basic-wash');
 
 	const todayISO = new Date().toISOString().slice(0, 10);
 
@@ -62,6 +79,9 @@
 		if (kind === 'package') return packages.find((p) => p.slug === slug)?.price ?? 28;
 		return services.find((s) => s.slug === slug)?.priceFrom ?? 16;
 	});
+	// Promo code (P1-6): SHINEFREE makes a first Basic Wash $0 — applied after
+	// choicePrice is declared, since washPrice depends on it.
+	const washPrice = $derived(promoApplied && isBasic ? 0 : choicePrice);
 	// ETA from the chosen item's own duration — e.g. Ceramic Coating is 2 hours.
 	const eta = $derived.by(() => {
 		const [kind, slug] = choice.split(':');
@@ -75,7 +95,22 @@
 	const location = $derived(locations.find((l) => l.slug === locationSlug) ?? locations[0]);
 	const addonTotal = $derived(selectedAddons.reduce((sum, n) => sum + (addons.find((a) => a.name === n)?.price ?? 0), 0));
 	const sizeUpcharge = $derived(sizeUpcharges[size] ?? 0);
-	const total = $derived(choicePrice + sizeUpcharge + addonTotal);
+	const total = $derived(washPrice + sizeUpcharge + addonTotal);
+
+	function applyPromo() {
+		if (promoCode.trim().toUpperCase() !== 'SHINEFREE') {
+			promoMsg = 'That code is not recognised — try SHINEFREE.';
+			promoApplied = false;
+			return;
+		}
+		if (!isBasic) {
+			promoMsg = 'SHINEFREE is for a Basic Wash — pick Basic Wash in step 1 to use it.';
+			promoApplied = false;
+			return;
+		}
+		promoApplied = true;
+		promoMsg = 'SHINEFREE applied — your first Basic Wash is $0.';
+	}
 	const ref = $derived(bookingRef(name || 'guest', dateISO || todayISO));
 	const formattedWhen = $derived.by(() => {
 		if (!dateISO) return '';
@@ -86,6 +121,15 @@
 	const vehicleLine = $derived(
 		[year.trim(), make.trim(), model.trim()].filter(Boolean).join(' ') + ` (${size})`
 	);
+
+	const jsonLd = {
+		'@context': 'https://schema.org',
+		'@type': 'BreadcrumbList',
+		itemListElement: [
+			{ '@type': 'ListItem', position: 1, name: 'Home', item: 'https://florida-shine-car-wash.pages.dev/' },
+			{ '@type': 'ListItem', position: 2, name: 'Book an Appointment', item: 'https://florida-shine-car-wash.pages.dev/book' }
+		]
+	};
 
 	function next() {
 		errorMsg = '';
@@ -131,6 +175,11 @@
 	description="Book a wash or detailing appointment at any of our 8 Florida locations in under two minutes. Pick a service, date and time — pay at the wash, no card needed."
 	canonical="/book"
 	ogImage="hero-soapy-car"
+	jsonLd={jsonLd}
+	hreflang={[
+		{ lang: 'es', href: 'https://florida-shine-car-wash.pages.dev/es/book' },
+		{ lang: 'x-default', href: 'https://florida-shine-car-wash.pages.dev/book' }
+	]}
 />
 <PageHero eyebrow="BOOK AN APPOINTMENT" title="Book Your Shine" subtitle="Pick a service, a location and a time — done in under two minutes. No payment now; pay at the wash." />
 
@@ -142,15 +191,22 @@
 			<p class="mt-2 text-muted">Your appointment is confirmed. This is a mock booking — no payment was taken.</p>
 			<dl class="mt-6 space-y-2 rounded-2xl bg-sky-light p-5 text-left text-sm">
 				<div class="flex justify-between gap-4"><dt class="font-bold text-navy">Reference</dt><dd class="font-black text-navy">{ref}</dd></div>
-				<div class="flex justify-between gap-4"><dt class="font-bold text-navy">Service</dt><dd>{choiceLabel} — ${choicePrice}</dd></div>
+				<div class="flex justify-between gap-4"><dt class="font-bold text-navy">Service</dt><dd>{choiceLabel} — ${washPrice}{#if promoApplied && isBasic} (was ${choicePrice} — SHINEFREE){/if}</dd></div>
+				{#if promoApplied && isBasic}<div class="flex justify-between gap-4"><dt class="font-bold text-navy">Promo code</dt><dd>SHINEFREE — first Basic Wash free</dd></div>{/if}
 				{#if sizeUpcharge > 0}<div class="flex justify-between gap-4"><dt class="font-bold text-navy">Vehicle size ({size})</dt><dd>+${sizeUpcharge}</dd></div>{/if}
 				{#if selectedAddons.length > 0}<div class="flex justify-between gap-4"><dt class="font-bold text-navy">Add-ons</dt><dd>{selectedAddons.join(', ')} (+${addonTotal})</dd></div>{/if}
+				<div class="flex justify-between gap-4"><dt class="font-bold text-navy">Payment</dt><dd>{payMethod} (mock — no real payment taken)</dd></div>
 				<div class="flex justify-between gap-4"><dt class="font-bold text-navy">Location</dt><dd>{location.name} — {location.address}, {location.city}, FL {location.zip}</dd></div>
 				<div class="flex justify-between gap-4"><dt class="font-bold text-navy">When</dt><dd>{formattedWhen}</dd></div>
 				<div class="flex justify-between gap-4"><dt class="font-bold text-navy">Vehicle</dt><dd>{vehicleLine}</dd></div>
 				<div class="flex justify-between gap-4"><dt class="font-bold text-navy">Estimated time</dt><dd>{eta}</dd></div>
 				<div class="flex justify-between gap-4 border-t border-line pt-2"><dt class="font-black text-navy">Total (pay at wash)</dt><dd class="font-black text-navy">${total}</dd></div>
 			</dl>
+			<div class="mt-6 rounded-2xl bg-foam p-4 text-left text-sm">
+				<p class="font-black text-navy">Enjoyed your wash? Tell Google</p>
+				<p class="mt-1 text-muted">After your visit, a quick review on our Google profile helps other Florida drivers find us.</p>
+				<p class="mt-3"><a href={reviewSources.googleUrl} target="_blank" rel="noopener" class="inline-flex min-h-12 items-center rounded-full bg-sun px-6 py-3 font-black text-navy">WRITE A REVIEW ON GOOGLE</a></p>
+			</div>
 			<div class="mt-6 rounded-2xl bg-foam p-4 text-left text-sm">
 				<p class="font-black text-navy">What to bring</p>
 				<ul class="mt-2 list-disc space-y-1 pl-5 text-muted">
@@ -161,6 +217,9 @@
 			</div>
 			<p class="mt-4 text-sm text-muted">
 				Need to change it? <a href="/track-booking" class="inline-flex min-h-11 items-center font-bold text-navy-light underline-offset-2 hover:underline">Manage / reschedule this booking</a>
+			</p>
+			<p class="mt-2 text-sm text-muted">
+				No account was needed to book. Want faster bookings next time? <a href="/account" class="inline-flex min-h-11 items-center font-bold text-navy-light underline-offset-2 hover:underline">Create a member account</a> — optional, after booking.
 			</p>
 			<div class="mt-6 flex flex-wrap justify-center gap-3">
 				<a href="/locations" class="inline-flex min-h-12 items-center rounded-full border-2 border-navy px-6 py-3 font-black text-navy">View Location</a>
@@ -224,6 +283,18 @@
 					</div>
 					<p class="mt-3 text-sm text-muted">{sizeUpchargeNote}</p>
 				</fieldset>
+				<div class="mt-6 rounded-2xl bg-sky-light p-4">
+					<label for="promo" class="font-bold text-navy">Promo code</label>
+					<p class="mt-1 text-sm text-muted">Have a code? Enter it here — SHINEFREE makes your first Basic Wash $0, online or in person.</p>
+					<div class="mt-2 flex flex-col gap-2 sm:flex-row">
+						<input id="promo" type="text" bind:value={promoCode} placeholder="e.g. SHINEFREE" autocomplete="off" class="min-h-12 min-w-0 flex-1 rounded-xl border-2 border-line bg-white px-3 py-3 uppercase" />
+						<button type="button" onclick={applyPromo} class="inline-flex min-h-12 items-center justify-center rounded-full bg-navy px-6 py-3 text-sm font-black text-white">APPLY CODE</button>
+					</div>
+					{#if promoMsg}<p class="mt-2 text-sm font-bold {promoApplied ? 'text-navy' : 'text-red-800'}" role="status">{promoMsg}</p>{/if}
+				</div>
+				<div class="mt-6">
+					<FitChecker />
+				</div>
 			{:else if step === 2}
 				<h2 class="font-display text-2xl font-black text-navy">Step 2 — Choose a location</h2>
 				<div class="mt-5 space-y-3">
@@ -297,10 +368,23 @@
 					<label for="bemail" class="font-bold text-navy">Email (for your confirmation)</label>
 					<input id="bemail" type="email" bind:value={email} autocomplete="email" class="mt-1 block min-h-12 w-full rounded-xl border-2 border-line bg-white px-3 py-3" placeholder="alex@example.com" />
 				</div>
+				<fieldset class="mt-6 min-w-0">
+					<legend class="font-bold text-navy">How you'll pay (mock — no real payment)</legend>
+					<div class="mt-2 grid gap-3 sm:grid-cols-3">
+						{#each ['Apple Pay', 'Google Pay', 'Pay at the wash'] as method}
+							<label class="cursor-pointer rounded-2xl border-2 p-4 focus-within:ring-2 focus-within:ring-navy focus-within:ring-offset-2 {payMethod === method ? 'border-sun bg-sun/10' : 'border-line'}">
+								<input type="radio" name="paymethod" value={method} bind:group={payMethod} class="sr-only" />
+								<span class="flex items-center gap-2 font-black text-navy"><Wallet class="h-5 w-5 shrink-0" aria-hidden="true" /> {method}</span>
+								<span class="mt-1 block text-sm text-muted">{method === 'Pay at the wash' ? 'Card or cash at the wash' : 'Mock — no payment is taken'}</span>
+							</label>
+						{/each}
+					</div>
+				</fieldset>
 				<div class="mt-6 rounded-2xl bg-sky-light p-4 text-sm">
 					<p class="font-black text-navy">Your booking summary</p>
-					<p class="mt-1">{choiceLabel} — ${choicePrice}{#if sizeUpcharge > 0} + {size} size upcharge (${sizeUpcharge}){/if}{#if selectedAddons.length} + {selectedAddons.join(', ')} (+${addonTotal}){/if}</p>
+					<p class="mt-1">{choiceLabel} — ${washPrice}{#if promoApplied && isBasic} (was ${choicePrice} — SHINEFREE){/if}{#if sizeUpcharge > 0} + {size} size upcharge (${sizeUpcharge}){/if}{#if selectedAddons.length} + {selectedAddons.join(', ')} (+${addonTotal}){/if}</p>
 					<p>{location.name} · {formattedWhen}</p>
+					<p>Payment: {payMethod} (mock — no real payment taken)</p>
 					<p class="font-black text-navy">Total to pay at the wash: ${total}</p>
 				</div>
 			{/if}

@@ -4,12 +4,22 @@
 	import Picture from '#lib/components/Picture.svelte';
 	import Seo from '#lib/components/Seo.svelte';
 	import { services } from '#lib/data/site.ts';
+
+	const jsonLd = {
+		'@context': 'https://schema.org',
+		'@type': 'BreadcrumbList',
+		itemListElement: [
+			{ '@type': 'ListItem', position: 1, name: 'Home', item: 'https://florida-shine-car-wash.pages.dev/' },
+			{ '@type': 'ListItem', position: 2, name: 'Services', item: 'https://florida-shine-car-wash.pages.dev/services' }
+		]
+	};
 </script>
 <Seo
 	title="Services — Florida Shine Car Wash"
 	description="Car wash & detailing services across Florida: exterior wash from $16, interior detailing from $45, ceramic coating from $199, wax & polish, wheel care and pet hair removal."
 	canonical="/services"
 	ogImage="foam-wash"
+	jsonLd={jsonLd}
 />
 <PageHero eyebrow="WHAT WE DO" title="Car Wash & Detailing Services" subtitle="From a quick 10-minute wash to a full ceramic coating — every service is done by local Florida experts with paint-safe products and eco-friendly water systems." />
 <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6">

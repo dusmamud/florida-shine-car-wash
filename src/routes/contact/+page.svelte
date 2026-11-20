@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Clock, Mail, MapPin, Phone } from '@lucide/svelte';
+	import { Clock, Mail, MapPin, MessageCircle, Phone } from '@lucide/svelte';
 	import PageHero from '#lib/components/PageHero.svelte';
 	import Seo from '#lib/components/Seo.svelte';
 	import { site } from '#lib/data/site.ts';
@@ -10,18 +10,29 @@
 		if (!name.trim() || !email.includes('@') || !message.trim()) { err = 'Please fill in your name, a valid email and your message.'; return; }
 		err = ''; sent = true;
 	}
+
+	const jsonLd = {
+		'@context': 'https://schema.org',
+		'@type': 'BreadcrumbList',
+		itemListElement: [
+			{ '@type': 'ListItem', position: 1, name: 'Home', item: 'https://florida-shine-car-wash.pages.dev/' },
+			{ '@type': 'ListItem', position: 2, name: 'Contact', item: 'https://florida-shine-car-wash.pages.dev/contact' }
+		]
+	};
 </script>
 <Seo
 	title="Contact — Florida Shine Car Wash"
 	description="Contact Florida Shine Car Wash: call (305) 555-0198, email hello@floridashinecarwash.com, or visit our Miami head office at 1200 Biscayne Blvd. We answer within one business day."
 	canonical="/contact"
 	ogImage="wash-building"
+	jsonLd={jsonLd}
 />
 <PageHero eyebrow="TALK TO US" title="Contact Florida Shine" subtitle="Questions, feedback or a lost item at the wash? We answer every message within one business day." />
 <section class="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-2">
 	<div>
 		<ul class="space-y-3">
 			<li class="flex items-start gap-3 rounded-2xl bg-white px-4 py-3 shadow-sm ring-1 ring-line"><Phone class="mt-0.5 h-5 w-5 shrink-0 text-navy" aria-hidden="true" /><span><strong class="text-navy">Phone</strong><br /><a class="font-bold text-navy-light" href={site.phoneHref}>{site.phone}</a></span></li>
+			<li class="flex items-start gap-3 rounded-2xl bg-white px-4 py-3 shadow-sm ring-1 ring-line"><MessageCircle class="mt-0.5 h-5 w-5 shrink-0 text-navy" aria-hidden="true" /><span><strong class="text-navy">WhatsApp</strong><br /><a class="font-bold text-navy-light" href={site.whatsappHref} target="_blank" rel="noopener">Chat with us on WhatsApp</a><br /><span class="text-sm text-muted">We reply within one business day.</span></span></li>
 			<li class="flex items-start gap-3 rounded-2xl bg-white px-4 py-3 shadow-sm ring-1 ring-line"><Mail class="mt-0.5 h-5 w-5 shrink-0 text-navy" aria-hidden="true" /><span><strong class="text-navy">Email</strong><br /><a class="break-all font-bold text-navy-light" href="mailto:{site.email}">{site.email}</a></span></li>
 			<li class="flex items-start gap-3 rounded-2xl bg-white px-4 py-3 shadow-sm ring-1 ring-line"><MapPin class="mt-0.5 h-5 w-5 shrink-0 text-navy" aria-hidden="true" /><span><strong class="text-navy">Head office</strong><br />{site.address}</span></li>
 			<li class="flex items-start gap-3 rounded-2xl bg-white px-4 py-3 shadow-sm ring-1 ring-line"><Clock class="mt-0.5 h-5 w-5 shrink-0 text-navy" aria-hidden="true" /><span><strong class="text-navy">Hours</strong><br />Mon – Sat: 7:00 AM – 7:00 PM<br />Sunday: 8:00 AM – 6:00 PM</span></li>

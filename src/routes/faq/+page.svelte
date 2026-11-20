@@ -14,12 +14,22 @@
 				(!query.trim() || `${f.q} ${f.a}`.toLowerCase().includes(query.trim().toLowerCase()))
 		)
 	);
+
+	const jsonLd = {
+		'@context': 'https://schema.org',
+		'@type': 'BreadcrumbList',
+		itemListElement: [
+			{ '@type': 'ListItem', position: 1, name: 'Home', item: 'https://florida-shine-car-wash.pages.dev/' },
+			{ '@type': 'ListItem', position: 2, name: 'FAQs', item: 'https://florida-shine-car-wash.pages.dev/faq' }
+		]
+	};
 </script>
 <Seo
 	title="FAQs — Florida Shine Car Wash"
 	description="Frequently asked questions about Florida Shine Car Wash: wash times, appointments, memberships, rain-checks, vehicle height limits, gift cards and all 8 Florida locations."
 	canonical="/faq"
 	ogImage="foam-wash"
+	jsonLd={jsonLd}
 />
 <PageHero eyebrow="GOOD QUESTIONS" title="Frequently Asked Questions" subtitle="Everything Florida drivers ask us — wash times, appointments, memberships and rainy days." />
 <section class="mx-auto max-w-3xl px-4 py-12 sm:px-6">

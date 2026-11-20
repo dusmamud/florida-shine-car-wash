@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Gift, Phone } from '@lucide/svelte';
+	import GiftMembership from '#lib/components/GiftMembership.svelte';
 	import PageHero from '#lib/components/PageHero.svelte';
 	import Seo from '#lib/components/Seo.svelte';
 	import { giftCards } from '#lib/data/site.ts';
@@ -25,12 +26,22 @@
 		errorMsg = '';
 		done = true;
 	}
+
+	const jsonLd = {
+		'@context': 'https://schema.org',
+		'@type': 'BreadcrumbList',
+		itemListElement: [
+			{ '@type': 'ListItem', position: 1, name: 'Home', item: 'https://florida-shine-car-wash.pages.dev/' },
+			{ '@type': 'ListItem', position: 2, name: 'Gift Cards', item: 'https://florida-shine-car-wash.pages.dev/gift-cards' }
+		]
+	};
 </script>
 <Seo
 	title="Gift Cards — Florida Shine Car Wash"
 	description="Florida Shine gift cards from $25 to $200, valid at all 8 Florida locations. Email it, print it at home or pick it up in store — and they never expire."
 	canonical="/gift-cards"
 	ogImage="club-car"
+	jsonLd={jsonLd}
 />
 <PageHero eyebrow="GIVE THE SHINE" title="Gift Cards" subtitle="A clean car is always the right gift. Gift cards from $25 to $200, valid at all 8 Florida locations, and they never expire." />
 <section class="mx-auto max-w-4xl px-4 py-12 sm:px-6">
@@ -54,7 +65,7 @@
 			</div>
 		{:else}
 			<h2 class="font-display text-2xl font-black">Get a ${picked} gift card</h2>
-			<p class="mt-2 text-white/85">No payment online — buy by phone or in-store. Gift cards never expire: under the federal 5-year rule they are valid for at least five years from purchase, and at Florida Shine they carry no expiry date at all.</p>
+			<p class="mt-2 text-white/85">No payment online — buy by phone or in-store. Gift cards never expire and no fees are ever charged after purchase (Florida §501.95): under the federal 5-year rule they are valid for at least five years from purchase, and at Florida Shine they carry no expiry date at all.</p>
 			<form class="mt-6 space-y-4" onsubmit={request} novalidate>
 				<div class="grid gap-4 sm:grid-cols-2">
 					<div>
@@ -93,4 +104,8 @@
 			</form>
 		{/if}
 	</div>
+	<div class="mt-8">
+		<GiftMembership />
+	</div>
+	<p class="mt-8 text-center text-sm text-muted">Gift cards never expire and carry no fees after purchase — see the <a href="/terms" class="font-bold text-navy underline underline-offset-2">Terms of Service</a>.</p>
 </section>

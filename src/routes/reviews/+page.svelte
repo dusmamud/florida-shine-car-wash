@@ -9,14 +9,24 @@
 	const shown = $derived(
 		reviews.filter((r) => (locFilter === 'all' || r.location === locFilter) && (svcFilter === 'all' || r.service === svcFilter))
 	);
+
+	const jsonLd = {
+		'@context': 'https://schema.org',
+		'@type': 'BreadcrumbList',
+		itemListElement: [
+			{ '@type': 'ListItem', position: 1, name: 'Home', item: 'https://florida-shine-car-wash.pages.dev/' },
+			{ '@type': 'ListItem', position: 2, name: 'Reviews', item: 'https://florida-shine-car-wash.pages.dev/reviews' }
+		]
+	};
 </script>
 <Seo
 	title="Reviews — Florida Shine Car Wash"
 	description="Florida Shine Car Wash reviews: 4.8 out of 5 from 2,400+ Google reviews. Read 6 featured reviews from Miami, Tampa, Orlando and more — filter by location or service."
 	canonical="/reviews"
 	ogImage="club-car"
+	jsonLd={jsonLd}
 />
-<PageHero eyebrow="WHAT DRIVERS SAY" title="Customer Reviews" subtitle="Real words from Florida drivers who washed with us. The 6 reviews below are featured mock reviews." />
+<PageHero eyebrow="WHAT DRIVERS SAY" title="Customer Reviews" subtitle="Featured mock reviews from Florida drivers — 6 featured reviews, below. Our Google rating is 4.8 out of 5 from 2,400+ Google reviews." />
 <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6">
 	<div class="mx-auto max-w-md rounded-3xl bg-navy p-6 text-center text-white shadow-xl">
 		<p class="font-display text-5xl font-black text-sun">{ratingSummary.average} <span class="text-2xl">/ 5</span></p>

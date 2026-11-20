@@ -21,6 +21,14 @@
 
 html {
 	scroll-behavior: smooth;
+	/* P1-8: anchor jumps (e.g. #join-form) must not land under the sticky
+	   header (~68px tall, ~60px when compact). */
+	scroll-padding-top: 96px;
+}
+
+/* Belt and braces for the membership join form, the main anchor target. */
+#join-form {
+	scroll-margin-top: 96px;
 }
 
 body {
@@ -124,6 +132,10 @@ figure:has(input[type='range']:focus-visible) {
 	animation: marquee 30s linear infinite;
 }
 .marquee:hover .marquee-track {
+	animation-play-state: paused;
+}
+/* P2-7: the home page pause button toggles .marquee-paused on the strip. */
+.marquee-paused .marquee-track {
 	animation-play-state: paused;
 }
 @media (prefers-reduced-motion: reduce) {

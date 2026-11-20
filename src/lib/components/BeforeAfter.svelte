@@ -2,7 +2,7 @@
 	import Picture from '#lib/components/Picture.svelte';
 	import { ChevronsLeftRight } from '@lucide/svelte';
 
-	let { image, alt, title, beforeImage, caption }: { image: string; alt: string; title: string; beforeImage?: string; caption?: string } = $props();
+	let { image, alt, title, beforeImage, caption, beforeLabel = 'BEFORE', afterLabel = 'AFTER' }: { image: string; alt: string; title: string; beforeImage?: string; caption?: string; beforeLabel?: string; afterLabel?: string } = $props();
 	let pos = $state(50);
 	let slider: HTMLInputElement | undefined = $state();
 
@@ -20,7 +20,7 @@
 		<!-- After (clean) -->
 		<div class="absolute inset-0">
 			<Picture src={image} {alt} width={1200} height={800} sizes="(max-width: 640px) 100vw, 800px" class="h-full w-full" />
-			<span class="absolute right-3 top-3 rounded-full bg-sun px-3 py-1 text-xs font-black text-navy">AFTER</span>
+			<span class="absolute right-3 top-3 rounded-full bg-sun px-3 py-1 text-xs font-black text-navy">{afterLabel}</span>
 		</div>
 		<!-- Before: a genuinely dirty car photo when beforeImage is given; otherwise the same photo, dull-filtered -->
 		<div class="absolute inset-0 overflow-hidden" style="width: {pos}%">
@@ -31,7 +31,7 @@
 					<Picture src={image} alt={`Before: ${alt}`} width={1200} height={800} sizes="(max-width: 640px) 100vw, 800px" class="h-full w-full grayscale brightness-[0.72] contrast-[0.85] sepia-[0.25]" />
 				{/if}
 			</div>
-			<span class="absolute left-3 top-3 rounded-full bg-navy px-3 py-1 text-xs font-black text-white">BEFORE</span>
+			<span class="absolute left-3 top-3 rounded-full bg-navy px-3 py-1 text-xs font-black text-white">{beforeLabel}</span>
 		</div>
 		<!-- Divider + handle -->
 		<div class="absolute inset-y-0" style="left: calc({pos}% - 2px)">

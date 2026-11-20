@@ -1,14 +1,18 @@
 <script lang="ts">
-	import { Check } from '@lucide/svelte';
+	import { Check, Wallet } from '@lucide/svelte';
+	import FitChecker from '#lib/components/FitChecker.svelte';
+	import GiftMembership from '#lib/components/GiftMembership.svelte';
 	import PageHero from '#lib/components/PageHero.svelte';
 	import Seo from '#lib/components/Seo.svelte';
-	import { memberships } from '#lib/data/site.ts';
+	import { membershipRules, memberships } from '#lib/data/site.ts';
 	let selected = $state('premium-club');
 	let joined = $state(false);
 	let name = $state('');
 	let email = $state('');
 	let consent = $state(false);
 	let errorMsg = $state('');
+	// Mock payment method — no real payment is taken in this demo.
+	let payMethod = $state('Card (mock)');
 	function join(e: SubmitEvent) {
 		e.preventDefault();
 		if (!name.trim() || !email.includes('@')) {
@@ -23,6 +27,15 @@
 		joined = true;
 	}
 	const plan = $derived(memberships.find((m) => m.slug === selected) ?? memberships[1]);
+
+	const jsonLd = {
+		'@context': 'https://schema.org',
+		'@type': 'BreadcrumbList',
+		itemListElement: [
+			{ '@type': 'ListItem', position: 1, name: 'Home', item: 'https://florida-shine-car-wash.pages.dev/' },
+			{ '@type': 'ListItem', position: 2, name: 'Memberships', item: 'https://florida-shine-car-wash.pages.dev/memberships' }
+		]
+	};
 </script>
 
 <Seo
@@ -30,6 +43,11 @@
 	description="Unlimited Wash Club from $19/mo: unlimited washes at all 8 Florida locations, RFID sticker recognition, 1 wash per day per vehicle, billed monthly on your join date, cancel anytime."
 	canonical="/memberships"
 	ogImage="club-car"
+	jsonLd={jsonLd}
+	hreflang={[
+		{ lang: 'es', href: 'https://florida-shine-car-wash.pages.dev/es/memberships' },
+		{ lang: 'x-default', href: 'https://florida-shine-car-wash.pages.dev/memberships' }
+	]}
 />
 <PageHero eyebrow="UNLIMITED WASH CLUB" title="Wash as Often as You Want" subtitle="One flat monthly price, unlimited washes at all 8 Florida locations. No contracts, cancel anytime — and members skip the line in the member-only lane." />
 
@@ -82,6 +100,20 @@
 			</p>
 		</div>
 	</div>
+	<div class="mt-4 grid gap-4 md:grid-cols-3">
+		<div class="rounded-3xl bg-white p-6 shadow ring-1 ring-line">
+			<h3 class="font-black text-navy">Pause your plan</h3>
+			<p class="mt-2 text-sm leading-relaxed text-muted">{membershipRules.pause} Pause or resume in <a href="/account" class="font-bold text-navy underline underline-offset-2">your account</a>.</p>
+		</div>
+		<div class="rounded-3xl bg-white p-6 shadow ring-1 ring-line">
+			<h3 class="font-black text-navy">Swap vehicles</h3>
+			<p class="mt-2 text-sm leading-relaxed text-muted">{membershipRules.vehicleSwaps}</p>
+		</div>
+		<div class="rounded-3xl bg-white p-6 shadow ring-1 ring-line">
+			<h3 class="font-black text-navy">Cancel in 2 clicks</h3>
+			<p class="mt-2 text-sm leading-relaxed text-muted">{membershipRules.cancel} Full rules in the <a href="/membership-terms" class="font-bold text-navy underline underline-offset-2">Membership Terms</a>.</p>
+		</div>
+	</div>
 	<div class="mt-6 overflow-x-auto rounded-3xl bg-white shadow ring-1 ring-line">
 		<table class="w-full min-w-[560px] text-left text-sm">
 			<thead><tr class="border-b border-line bg-sky-light"><th class="px-4 py-3 font-black text-navy">Plan</th><th class="px-4 py-3 font-black text-navy">Price</th><th class="px-4 py-3 font-black text-navy">Pays for itself</th><th class="px-4 py-3 font-black text-navy">Extra vehicle</th></tr></thead>
@@ -108,8 +140,8 @@
 			<div class="mt-6 rounded-2xl bg-sun p-5 text-navy" role="status">
 				<p class="font-black">Welcome to the club, {name}!</p>
 				<p class="mt-1 text-sm">Your {plan.name} membership (${plan.price}/mo) is set up in this demo. A confirmation has been "sent" to {email}. Show this page at any location to activate your member sticker.</p>
-				<p class="mt-3 text-sm">Your terms: ${plan.price}/mo, {plan.billing.toLowerCase()}, {plan.recognition} recognition, {plan.dailyLimit.toLowerCase()}, cancel anytime online or in person.</p>
-				<p class="mt-3 text-sm font-bold">Manage or cancel anytime in <a href="/account" class="underline underline-offset-2">your account</a>. Questions? Call (305) 555-0198.</p>
+				<p class="mt-3 text-sm">Your terms: ${plan.price}/mo, {plan.billing.toLowerCase()}, {plan.recognition} recognition, {plan.dailyLimit.toLowerCase()}, cancel anytime online or in person. Payment: {payMethod} (mock — no real payment taken).</p>
+				<p class="mt-3 text-sm font-bold">Manage or cancel anytime in <a href="/account" class="underline underline-offset-2">your account</a> — no account was needed to join; set one up afterwards if you like. Questions? Call (305) 555-0198.</p>
 			</div>
 		{:else}
 			<form class="mt-6 space-y-4" onsubmit={join} novalidate>
@@ -119,6 +151,7 @@
 						{#each memberships as m}<option value={m.slug}>{m.name} — ${m.price}/mo</option>{/each}
 					</select>
 				</div>
+				<FitChecker />
 				<div>
 					<label for="mname" class="text-sm font-bold">Full name</label>
 					<input id="mname" type="text" bind:value={name} autocomplete="name" class="mt-1 block min-h-12 w-full rounded-xl border border-white/30 bg-white px-3 py-3 text-navy" placeholder="Alex Rivera" />
@@ -131,8 +164,20 @@
 					<p class="font-bold">Terms summary — {plan.name}, ${plan.price}/mo</p>
 					<p class="mt-1 text-white/80">{plan.billing}. Recognised by {plan.recognition.toLowerCase()}. {plan.dailyLimit}. Cancel anytime online or in person — no cancellation fee.</p>
 				</div>
+				<fieldset class="min-w-0">
+					<legend class="text-sm font-bold">Payment method (mock — no real payment)</legend>
+					<div class="mt-2 flex flex-wrap gap-2">
+						{#each ['Apple Pay', 'Google Pay', 'Card (mock)'] as method}
+							<label class="cursor-pointer rounded-full border-2 px-4 py-2.5 text-sm font-bold focus-within:ring-2 focus-within:ring-sun {payMethod === method ? 'border-sun bg-sun text-navy' : 'border-white/40 text-white'}">
+								<input type="radio" name="paymethod" value={method} bind:group={payMethod} class="sr-only" />
+								<span class="flex items-center gap-1.5"><Wallet class="h-4 w-4" aria-hidden="true" /> {method}</span>
+							</label>
+						{/each}
+					</div>
+					<p class="mt-2 text-xs text-white/70">Mock payment only — no card details are collected and nothing is charged.</p>
+				</fieldset>
 				<label class="flex min-h-12 cursor-pointer items-start gap-3 text-sm">
-					<input type="checkbox" bind:checked={consent} class="mt-1 h-5 w-5 shrink-0 accent-[#ffc700]" />
+					<input type="checkbox" bind:checked={consent} class="mt-1 h-6 w-6 shrink-0 accent-[#ffc700]" />
 					<span>I agree to the <a href="/membership-terms" class="font-bold text-sun underline underline-offset-2">Membership Terms</a> — ${plan.price}/mo, billed monthly on my join date, cancel anytime online or in person.</span>
 				</label>
 				{#if errorMsg}<p class="rounded-xl bg-red-100 px-4 py-3 text-sm font-bold text-red-800" role="alert">{errorMsg}</p>{/if}
@@ -141,4 +186,9 @@
 			</form>
 		{/if}
 	</div>
+</section>
+
+<section class="mx-auto max-w-4xl px-4 pb-16 sm:px-6" aria-labelledby="gift-heading">
+	<h2 id="gift-heading" class="sr-only">Gift a membership</h2>
+	<GiftMembership />
 </section>

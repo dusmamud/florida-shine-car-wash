@@ -2,6 +2,7 @@
 	import PageHero from '#lib/components/PageHero.svelte';
 	import Seo from '#lib/components/Seo.svelte';
 	import { blogPosts, locations, packages, services } from '#lib/data/site.ts';
+	import { round3BlogPosts } from '#lib/data/round3.ts';
 
 	const groups: { heading: string; links: { label: string; href: string }[] }[] = [
 		{ heading: 'Main', links: [
@@ -22,11 +23,26 @@
 			{ label: 'Offers', href: '/offers' },
 			{ label: 'Fleet Accounts', href: '/fleet' },
 			{ label: 'Shine Rewards Loyalty', href: '/loyalty' },
+			{ label: 'Refer a Friend — Give $5, Get $5', href: '/referral' },
+			{ label: 'SMS Club', href: '/sms-club' },
 			{ label: 'Book an Appointment', href: '/book' },
 			{ label: 'Track Booking', href: '/track-booking' },
 			{ label: 'Gift Cards', href: '/gift-cards' },
 			{ label: 'Blog — Car Care Tips', href: '/blog' },
-			...blogPosts.map((b) => ({ label: b.title, href: `/blog/${b.slug}` }))
+			...blogPosts.map((b) => ({ label: b.title, href: `/blog/${b.slug}` })),
+			...round3BlogPosts.map((b) => ({ label: b.title, href: `/blog/${b.slug}` }))
+		] },
+		{ heading: 'New in round 3', links: [
+			{ label: 'Rain Guarantee — Free Rewash in 48 Hours', href: '/rain-guarantee' },
+			{ label: 'EV & Oversized Vehicles — Will It Fit?', href: '/ev-and-oversized' },
+			{ label: 'Which Wash Is Right for Me? — Quiz', href: '/quiz' },
+			{ label: 'Service Area', href: '/service-area' },
+			{ label: 'Lost and Found', href: '/lost-and-found' },
+			{ label: 'En español — Inicio', href: '/es' },
+			{ label: 'En español — Paquetes', href: '/es/packages' },
+			{ label: 'En español — Membresías', href: '/es/memberships' },
+			{ label: 'En español — Reservar', href: '/es/book' },
+			{ label: 'En español — Ubicaciones', href: '/es/locations' }
 		] },
 		{ heading: 'Support', links: [
 			{ label: 'First Visit', href: '/first-visit' },

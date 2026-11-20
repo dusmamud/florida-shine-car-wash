@@ -49,8 +49,8 @@
 	<div class="mt-10 grid gap-4 md:grid-cols-3">
 		<div class="rounded-3xl bg-white p-6 shadow ring-1 ring-line">
 			<Clock class="h-6 w-6 text-navy" aria-hidden="true" />
-			<h2 class="mt-3 font-display text-xl font-black text-navy">About 5 minutes</h2>
-			<p class="mt-1 text-sm leading-relaxed text-muted">The tunnel wash itself takes about 5 minutes. Detailing is by appointment, so there is no waiting around for that either.</p>
+			<h2 class="mt-3 font-display text-xl font-black text-navy">About 5 minutes in the tunnel</h2>
+			<p class="mt-1 text-sm leading-relaxed text-muted">The tunnel wash itself takes about 5 minutes; the whole visit — tunnel, towel-dry and vacuums — is about 10 minutes. Detailing is by appointment, so there is no waiting around for that either.</p>
 		</div>
 		<div class="rounded-3xl bg-white p-6 shadow ring-1 ring-line">
 			<Car class="h-6 w-6 text-navy" aria-hidden="true" />
@@ -60,7 +60,7 @@
 		<div class="rounded-3xl bg-white p-6 shadow ring-1 ring-line">
 			<Ruler class="h-6 w-6 text-navy" aria-hidden="true" />
 			<h2 class="mt-3 font-display text-xl font-black text-navy">Fits up to 7 ft</h2>
-			<p class="mt-1 text-sm leading-relaxed text-muted">The tunnel fits vehicles up to 7 ft tall and 7 ft wide — most trucks and SUVs included. Taller vehicles are detailed by appointment.</p>
+			<p class="mt-1 text-sm leading-relaxed text-muted">The tunnel fits vehicles up to 7 ft tall and 73 in wide — most trucks and SUVs included. Taller vehicles are detailed by appointment.</p>
 		</div>
 	</div>
 

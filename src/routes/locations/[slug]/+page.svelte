@@ -3,7 +3,7 @@
 	import Picture from '#lib/components/Picture.svelte';
 	import Seo from '#lib/components/Seo.svelte';
 	import type { PageData } from './$types';
-	import { addons, faqs, reviews } from '#lib/data/site.ts';
+	import { addons, faqs, ratingSummary, reviews, reviewSources } from '#lib/data/site.ts';
 	let { data }: { data: PageData } = $props();
 	const loc = $derived(data.location);
 	const locReviews = $derived(reviews.filter((r) => r.location === loc.slug));
@@ -50,10 +50,14 @@
 	canonical="/locations/{loc.slug}"
 	ogImage={loc.image}
 	jsonLd={jsonLd}
+	hreflang={[
+		{ lang: 'es', href: `https://florida-shine-car-wash.pages.dev/es/locations/${loc.slug}` },
+		{ lang: 'x-default', href: `https://florida-shine-car-wash.pages.dev/locations/${loc.slug}` }
+	]}
 />
 <section class="bg-navy text-white"><div class="mx-auto max-w-7xl px-4 py-12 sm:px-6">
 	<p class="text-xs font-black tracking-[0.3em] text-sun">OUR LOCATIONS</p>
-	<h1 class="mt-3 font-display text-4xl font-black sm:text-5xl">{loc.name}</h1>
+	<h1 class="mt-3 font-display text-4xl font-black sm:text-5xl">{loc.name} — {loc.city}</h1>
 	<p class="mt-3 text-lg text-white/85">{loc.address}, {loc.city}, FL {loc.zip}</p>
 </div></section>
 <section class="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-2">
@@ -109,14 +113,27 @@
 		</div>
 		<div>
 			<h2 class="font-display text-2xl font-black text-navy">What drivers say here</h2>
-			<blockquote class="mt-4 rounded-3xl bg-white p-6 shadow ring-1 ring-line">
-				<p class="flex gap-0.5 text-sun" aria-label="{review.rating} out of 5 stars">
-					{#each Array(review.rating) as _}<Star class="h-4 w-4 fill-current" aria-hidden="true" />{/each}
-				</p>
-				<p class="mt-3 leading-relaxed">"{review.text}"</p>
-				<footer class="mt-4 text-sm"><strong class="text-navy">{review.name}</strong> <span class="text-muted">· {review.city} · {review.service} · {review.date}</span></footer>
-			</blockquote>
-			<p class="mt-4"><a href="/reviews" class="inline-flex min-h-11 items-center font-bold text-navy-light underline-offset-2 hover:underline">Read all reviews →</a></p>
+			<p class="mt-2 text-sm leading-relaxed text-muted">
+				{loc.name} holds {ratingSummary.average} out of 5 from {ratingSummary.totalReviews.toLocaleString('en-US')}+ {ratingSummary.source}.
+				{#if locReviews.length > 0}
+					{locReviews.length} featured review{locReviews.length === 1 ? '' : 's'} from this location, most recent {review.date}.
+				{:else}
+					No featured review from this location yet.
+				{/if}
+			</p>
+			{#if locReviews.length > 0}
+				<blockquote class="mt-4 rounded-3xl bg-white p-6 shadow ring-1 ring-line">
+					<p class="flex gap-0.5 text-sun" aria-label="{review.rating} out of 5 stars">
+						{#each Array(review.rating) as _}<Star class="h-4 w-4 fill-current" aria-hidden="true" />{/each}
+					</p>
+					<p class="mt-3 leading-relaxed">"{review.text}"</p>
+					<footer class="mt-4 text-sm"><strong class="text-navy">{review.name}</strong> <span class="text-muted">· {review.city} · {review.service} · {review.date}</span></footer>
+				</blockquote>
+			{/if}
+			<p class="mt-4 flex flex-wrap gap-3">
+				<a href="/reviews" class="inline-flex min-h-11 items-center font-bold text-navy-light underline-offset-2 hover:underline">Read all reviews →</a>
+				<a href={reviewSources.googleUrl} target="_blank" rel="noopener" class="inline-flex min-h-11 items-center font-bold text-navy-light underline-offset-2 hover:underline">Write a review on Google →</a>
+			</p>
 		</div>
 	</div>
 </section>

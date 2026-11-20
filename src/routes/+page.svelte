@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ArrowRight, BadgeCheck, Check, Droplets, MapPin, ShieldCheck, Star, Sun, Timer, Users } from '@lucide/svelte';
+	import { ArrowRight, BadgeCheck, CalendarDays, Check, Droplets, MapPin, Pause, Play, ShieldCheck, Star, Sun, Timer, Users } from '@lucide/svelte';
 	import { animate, press } from 'motion';
 	import BeforeAfter from '#lib/components/BeforeAfter.svelte';
 	import Counter from '#lib/components/Counter.svelte';
@@ -8,7 +8,7 @@
 	import Reveal from '#lib/components/Reveal.svelte';
 	import Seo from '#lib/components/Seo.svelte';
 	import TestimonialCarousel from '#lib/components/TestimonialCarousel.svelte';
-	import { beforeAfter, gallery, locations, packages, ratingSummary, reviews, site, trustItems, whyItems } from '#lib/data/site.ts';
+	import { beforeAfter, floridaSeasons, gallery, locations, packages, ratingSummary, reviews, site, trustItems, whyItems } from '#lib/data/site.ts';
 
 	// Hero entrance (GSAP, home only, dynamically imported so no timeline JS
 	// ships on other pages). The hero elements do NOT use .reveal, so the
@@ -52,6 +52,22 @@
 	}
 
 	const icons: Record<string, typeof Droplets> = { Droplets, ShieldCheck, Timer, BadgeCheck, Sun, Users, MapPin };
+	// Newsletter (mock) — the home section and the footer each keep their own state.
+	let nlEmail = $state('');
+	let nlDone = $state(false);
+	let nlErr = $state('');
+	function subscribeNewsletter(e: SubmitEvent) {
+		e.preventDefault();
+		if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(nlEmail.trim())) {
+			nlErr = 'Enter a valid email address.';
+			return;
+		}
+		nlErr = '';
+		nlDone = true;
+	}
+
+	// Marquee pause (P2-7) — keyboard-accessible pause/play beside the strip.
+	let marqueePaused = $state(false);
 	const orgJsonLd = {
 		'@context': 'https://schema.org',
 		'@type': 'Organization',
@@ -79,6 +95,10 @@
 	canonical="/"
 	ogImage="hero-soapy-car"
 	jsonLd={orgJsonLd}
+	hreflang={[
+		{ lang: 'es', href: 'https://florida-shine-car-wash.pages.dev/es' },
+		{ lang: 'x-default', href: 'https://florida-shine-car-wash.pages.dev/' }
+	]}
 />
 
 <!-- HERO -->
@@ -127,7 +147,9 @@
 </section>
 
 <!-- MARQUEE (existing .marquee/.marquee-track CSS: transform-only loop, pauses on hover) -->
-<div class="marquee mt-12 overflow-hidden bg-sun py-3" aria-hidden="true">
+<!-- P2-7: keyboard-accessible pause/play button (48px) beside the strip. -->
+<div class="mt-12 flex items-stretch bg-sun">
+	<div class="marquee {marqueePaused ? 'marquee-paused' : ''} min-w-0 flex-1 overflow-hidden py-3" aria-hidden="true">
 	<div class="marquee-track items-center text-sm font-black tracking-[0.2em] text-navy">
 		{#each [0, 1] as _}
 			<span class="flex shrink-0 items-center gap-8 pr-8">
@@ -139,7 +161,17 @@
 				<span>{locations.length} FLORIDA LOCATIONS</span><span>•</span>
 			</span>
 		{/each}
+		</div>
 	</div>
+	<button
+		type="button"
+		onclick={() => (marqueePaused = !marqueePaused)}
+		aria-pressed={marqueePaused}
+		aria-label={marqueePaused ? 'Play scrolling announcements' : 'Pause scrolling announcements'}
+		class="flex h-12 w-12 shrink-0 items-center justify-center self-center text-navy transition-colors hover:bg-navy/10"
+	>
+		{#if marqueePaused}<Play class="h-5 w-5" aria-hidden="true" />{:else}<Pause class="h-5 w-5" aria-hidden="true" />{/if}
+	</button>
 </div>
 
 <!-- COUNTERS — numbers from site data only: locations, Google reviews, rating, founded 2018 (team bio) -->
@@ -229,6 +261,25 @@
 	</div>
 </section>
 
+<!-- FLORIDA SEASONS — wash advice for the year -->
+<section class="mx-auto max-w-7xl px-4 pb-16 sm:px-6" aria-labelledby="seasons-heading">
+	<Reveal>
+		<p class="text-center text-xs font-black tracking-[0.3em] text-navy-light">— FLORIDA SEASONS —</p>
+		<h2 id="seasons-heading" class="mt-2 text-center font-display text-4xl font-black text-navy sm:text-5xl">WASHING THROUGH THE FLORIDA YEAR</h2>
+		<p class="mx-auto mt-3 max-w-xl text-center text-muted">Love bugs, afternoon storms and hurricane season each ask something different of your paint. Here is the short version.</p>
+	</Reveal>
+	<div class="mt-10 grid gap-6 md:grid-cols-3">
+		{#each floridaSeasons as season}
+			<article class="flex flex-col rounded-3xl bg-white p-6 shadow-lg shadow-navy/10 ring-1 ring-line">
+				<p class="flex items-center gap-2 text-sm font-black tracking-wide text-navy-light"><CalendarDays class="h-5 w-5 shrink-0 text-navy" aria-hidden="true" /> {season.months.toUpperCase()}</p>
+				<h3 class="mt-3 font-display text-2xl font-black text-navy">{season.name}</h3>
+				<p class="mt-2 flex-1 text-sm leading-relaxed text-muted">{season.text}</p>
+				<a href={season.link} class="mt-4 inline-flex min-h-11 items-center gap-2 text-sm font-black text-navy-light underline-offset-2 hover:underline">{season.linkLabel} <ArrowRight class="h-4 w-4" aria-hidden="true" /></a>
+			</article>
+		{/each}
+	</div>
+</section>
+
 <!-- BEFORE / AFTER -->
 <section class="mx-auto max-w-7xl px-4 pb-16 sm:px-6" aria-labelledby="ba-heading">
 	<Reveal>
@@ -269,6 +320,24 @@
 		<TestimonialCarousel reviews={reviews} />
 	</div>
 	<p class="mt-6 text-center"><a href="/reviews" class="inline-flex min-h-11 items-center font-bold text-navy-light underline-offset-2 hover:underline">Read all reviews →</a></p>
+</section>
+
+<!-- NEWSLETTER — mock signup with success state -->
+<section class="mx-auto max-w-7xl px-4 pb-16 sm:px-6" aria-labelledby="newsletter-heading">
+	<div class="rounded-3xl bg-navy px-6 py-10 text-center text-white shadow-xl sm:px-12">
+		<h2 id="newsletter-heading" class="font-display text-3xl font-black sm:text-4xl">WASH TIPS &amp; OFFERS, ONCE A MONTH</h2>
+		<p class="mx-auto mt-3 max-w-lg text-white/80">Love bug alerts, rainy-season reminders and members-only offers. No spam — and this is a demo signup, so no emails are actually sent.</p>
+		{#if nlDone}
+			<p class="mx-auto mt-6 max-w-md rounded-2xl bg-sun/20 px-5 py-4 font-bold text-sun" role="status">Thanks — {nlEmail} is on the list (demo). No emails will actually be sent.</p>
+		{:else}
+			<form class="mx-auto mt-6 flex max-w-md flex-col gap-3 sm:flex-row" onsubmit={subscribeNewsletter} novalidate>
+				<label for="home-newsletter" class="sr-only">Email address for the newsletter</label>
+				<input id="home-newsletter" type="email" bind:value={nlEmail} autocomplete="email" placeholder="you@example.com" class="min-h-12 min-w-0 flex-1 rounded-full border border-white/30 bg-white px-5 py-3 text-navy" />
+				<button type="submit" class="inline-flex min-h-12 items-center justify-center rounded-full bg-sun px-6 py-3 font-black text-navy">SIGN ME UP</button>
+			</form>
+			{#if nlErr}<p class="mt-3 text-sm font-bold text-red-300" role="alert">{nlErr}</p>{/if}
+		{/if}
+	</div>
 </section>
 
 <!-- CTA -->

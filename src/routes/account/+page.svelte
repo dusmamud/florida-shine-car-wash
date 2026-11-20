@@ -2,7 +2,7 @@
 	import { Car, CreditCard, Mail, Pause, UserRound, X } from '@lucide/svelte';
 	import PageHero from '#lib/components/PageHero.svelte';
 	import Seo from '#lib/components/Seo.svelte';
-	import { memberships, site } from '#lib/data/site.ts';
+	import { membershipRules, memberships, site } from '#lib/data/site.ts';
 
 	// Mock member portal — all state is client-side $state, prerender-safe.
 	let email = $state('');
@@ -138,6 +138,7 @@
 						<button type="button" onclick={() => (cancelStep = true)} class="inline-flex min-h-12 items-center gap-2 rounded-full bg-white/10 px-5 py-3 text-sm font-black text-white"><X class="h-4 w-4" aria-hidden="true" /> CANCEL PLAN</button>
 					{/if}
 				</div>
+				<p class="mt-3 text-xs text-white/70">{membershipRules.pause}</p>
 				{#if cancelStep}
 					<div class="mt-5 rounded-2xl bg-white/10 p-5" role="alert">
 						<p class="font-black">Cancel {plan.name}?</p>
@@ -184,6 +185,19 @@
 					<button type="submit" class="inline-flex min-h-12 items-center justify-center rounded-full bg-navy px-6 py-3 text-sm font-black text-white sm:col-span-2">ADD VEHICLE</button>
 				</form>
 				<p class="mt-3 text-sm text-muted">One vehicle per plan. Extra vehicles cost +${plan.extraVehiclePrice}/mo — see the <a href="/membership-terms" class="font-bold text-navy underline underline-offset-2">Membership Terms</a>.</p>
+				<p class="mt-2 text-sm text-muted">{membershipRules.vehicleSwaps}</p>
+			</div>
+
+			<div class="rounded-3xl bg-white p-6 shadow ring-1 ring-line sm:p-8">
+				<h2 class="font-display text-2xl font-black text-navy">Your membership rules</h2>
+				<ul class="mt-4 space-y-2.5 text-sm leading-relaxed text-muted">
+					<li><strong class="text-navy">Billing:</strong> {membershipRules.billing}</li>
+					<li><strong class="text-navy">Pause:</strong> {membershipRules.pause}</li>
+					<li><strong class="text-navy">Vehicle swaps:</strong> {membershipRules.vehicleSwaps}</li>
+					<li><strong class="text-navy">Extra vehicle:</strong> {membershipRules.extraVehicle}</li>
+					<li><strong class="text-navy">Cancel:</strong> {membershipRules.cancel}</li>
+				</ul>
+				<p class="mt-4 text-sm text-muted">Full rules in the <a href="/membership-terms" class="font-bold text-navy underline underline-offset-2">Membership Terms</a> · <a href="/memberships" class="font-bold text-navy underline underline-offset-2">Compare Club plans</a></p>
 			</div>
 
 			<p class="text-center text-sm text-muted">Questions about your plan? Call <a href={site.phoneHref} class="font-bold text-navy">{site.phone}</a> or see the <a href="/membership-terms" class="font-bold text-navy underline underline-offset-2">Membership Terms</a>.</p>

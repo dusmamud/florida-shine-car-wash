@@ -1,14 +1,24 @@
 <script lang="ts">
 	import PageHero from '#lib/components/PageHero.svelte';
 	import Seo from '#lib/components/Seo.svelte';
+
+	const jsonLd = {
+		'@context': 'https://schema.org',
+		'@type': 'BreadcrumbList',
+		itemListElement: [
+			{ '@type': 'ListItem', position: 1, name: 'Home', item: 'https://florida-shine-car-wash.pages.dev/' },
+			{ '@type': 'ListItem', position: 2, name: 'Privacy Policy', item: 'https://florida-shine-car-wash.pages.dev/privacy' }
+		]
+	};
 </script>
 <Seo
 	title="Privacy Policy — Florida Shine Car Wash"
 	description="How Florida Shine Car Wash collects, uses and protects your information — bookings, memberships, plate and RFID data, cookies, children and your choices."
 	canonical="/privacy"
 	ogImage="hero-soapy-car"
+	jsonLd={jsonLd}
 />
-<PageHero eyebrow="LEGAL" title="Privacy Policy" subtitle="Last updated: November 2024." />
+<PageHero eyebrow="LEGAL" title="Privacy Policy" subtitle="Last updated: November 2026." />
 <section class="mx-auto max-w-3xl px-4 py-12 sm:px-6">
 	<div class="space-y-8 leading-relaxed text-muted">
 		<section>

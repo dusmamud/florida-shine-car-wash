@@ -111,7 +111,7 @@
 			</div>
 			{#if err}<p class="rounded-xl bg-red-100 px-4 py-3 text-sm font-bold text-red-800" role="alert">{err}</p>{/if}
 			<button type="submit" class="inline-flex min-h-12 w-full items-center justify-center rounded-full bg-sun px-6 py-3 font-black text-navy">FIND MY BOOKING</button>
-			<p class="text-center text-sm text-muted">No booking yet? <a href="/book" class="font-bold text-navy underline underline-offset-2">Book an appointment</a>. Demo reference: <strong class="text-navy">FS-49886</strong>.</p>
+			<p class="text-center text-sm text-muted">No booking yet? <a href="/book" class="font-bold text-navy underline underline-offset-2">Book an appointment</a>. Demo reference: <strong class="text-navy">FS-49886</strong>. Rained on your wash? <a href="/rain-guarantee" class="font-bold text-navy underline underline-offset-2">Claim your free 48-hour rewash</a>.</p>
 		</form>
 	</div>
 

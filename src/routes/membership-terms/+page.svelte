@@ -21,7 +21,7 @@
 	ogImage="club-car"
 	jsonLd={jsonLd}
 />
-<PageHero eyebrow="LEGAL" title="Unlimited Wash Club — Membership Terms" subtitle="Last updated: November 2024. Plain-language terms for every Unlimited Wash Club plan." />
+<PageHero eyebrow="LEGAL" title="Unlimited Wash Club — Membership Terms" subtitle="Last updated: November 2026. Plain-language terms for every Unlimited Wash Club plan." />
 
 <section class="mx-auto max-w-3xl px-4 py-12 sm:px-6">
 	<div class="space-y-8 leading-relaxed text-muted">
@@ -51,11 +51,11 @@
 		</section>
 		<section>
 			<h2 class="font-display text-2xl font-black text-navy">7. Selling or transferring your vehicle</h2>
-			<p class="mt-2">Your membership belongs to you, not to the car. If you sell or transfer your vehicle, remove the RFID sticker — it does not transfer to the new owner and a sticker left on a sold car will keep washing that car on your plan. Add your new vehicle in your account or at any location and we will issue a new sticker.</p>
+			<p class="mt-2">Your membership belongs to you, not to the car. If you sell or transfer your vehicle, remove the RFID sticker — it does not transfer to the new owner and a sticker left on a sold car will keep washing that car on your plan. Add your new vehicle in your account or at any location and we will issue a new sticker. You can swap your registered vehicle up to 2 times a year, free.</p>
 		</section>
 		<section>
 			<h2 class="font-display text-2xl font-black text-navy">8. Pausing and changes</h2>
-			<p class="mt-2">You can pause your plan in your account; billing stops while paused and resumes when you reactivate. You can change plans in your account — a change applies from your next billing date. We may update these terms; we will update this page and the signs at each wash when we do.</p>
+			<p class="mt-2">You can pause your plan in your account for up to 60 days a year; billing stops while paused and resumes when you reactivate. You can change plans in your account — a change applies from your next billing date. We may update these terms; we will update this page and the signs at each wash when we do.</p>
 		</section>
 		<section>
 			<h2 class="font-display text-2xl font-black text-navy">9. Contact</h2>

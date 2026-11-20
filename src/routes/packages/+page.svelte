@@ -4,12 +4,26 @@
 	import Picture from '#lib/components/Picture.svelte';
 	import Seo from '#lib/components/Seo.svelte';
 	import { addons, memberships, packages, sizeUpchargeNote } from '#lib/data/site.ts';
+
+	const jsonLd = {
+		'@context': 'https://schema.org',
+		'@type': 'BreadcrumbList',
+		itemListElement: [
+			{ '@type': 'ListItem', position: 1, name: 'Home', item: 'https://florida-shine-car-wash.pages.dev/' },
+			{ '@type': 'ListItem', position: 2, name: 'Packages', item: 'https://florida-shine-car-wash.pages.dev/packages' }
+		]
+	};
 </script>
 <Seo
 	title="Wash Packages — Florida Shine Car Wash"
 	description="Three wash packages from $16: Basic Wash $16, Premium Wash $28, Deluxe Detail $45. Soft-touch foam, spot-free rinse, wax and interior options at 8 Florida locations."
 	canonical="/packages"
 	ogImage="foam-wash"
+	jsonLd={jsonLd}
+	hreflang={[
+		{ lang: 'es', href: 'https://florida-shine-car-wash.pages.dev/es/packages' },
+		{ lang: 'x-default', href: 'https://florida-shine-car-wash.pages.dev/packages' }
+	]}
 />
 <PageHero eyebrow="CHOOSE YOUR SHINE" title="Wash Packages" subtitle="Three simple packages, one sparkling result. Every wash uses soft-touch foam, filtered water and a spot-free rinse — and every package can be booked online in two minutes." />
 <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6">

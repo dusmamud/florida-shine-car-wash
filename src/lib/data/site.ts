@@ -5,6 +5,8 @@ export const site = {
 	tagline: 'Clean Car. Brighter Days.',
 	phone: '(305) 555-0198',
 	phoneHref: 'tel:+13055550198',
+	whatsappHref:
+		'https://wa.me/13055550198?text=Hi%20Florida%20Shine!%20I%20have%20a%20question%20about%20a%20wash.',
 	email: 'hello@floridashinecarwash.com',
 	address: '1200 Biscayne Blvd, Miami, FL 33132',
 	hours: [
@@ -36,6 +38,13 @@ export const beforeAfter = {
 	caption: 'A genuinely dirty car, before and after a Florida Shine wash — two different photos, not a filter.'
 };
 
+export const beforeAfterInterior = {
+	before: 'dirty-interior',
+	after: 'interior-detail',
+	caption:
+		'A genuinely dirty interior — beach sand, crumbs and pet hair — before and after a full interior detail. Two different photos, not a filter.'
+};
+
 export const reviewSources = {
 	googleUrl: 'https://maps.google.com/?q=Florida+Shine+Car+Wash+Miami'
 };
@@ -43,15 +52,15 @@ export const reviewSources = {
 export const firstVisit = {
 	steps: [
 		{ title: 'Drive in', text: 'Follow the blue arrows into the tunnel entrance. Stay in your car — no need to get out.' },
-		{ title: 'Through the tunnel', text: 'Soft-touch foam, rinse and blow-dry take about 5 minutes. Fold in your mirrors and antenna if they stick out.' },
+		{ title: 'Through the tunnel', text: 'Soft-touch foam, rinse and blow-dry take about 5 minutes in the tunnel. Fold in your mirrors and antenna if they stick out.' },
 		{ title: 'Dry & finish', text: 'Our team towel-dries the edges and checks the shine before you roll out.' },
 		{ title: 'Free vacuums', text: 'Pull into a vacuum bay after your wash — free for 15 minutes with any wash.' }
 	],
 	notes: [
 		'Stay in your car for the whole tunnel wash.',
 		'Fold in side mirrors and retract antennas before entering.',
-		'The tunnel fits vehicles up to 7 ft tall and 7 ft wide.',
-		'A tunnel wash takes about 5 minutes; detailing is by appointment.'
+		'The tunnel fits vehicles up to 7 ft tall and 73 in wide.',
+		'A tunnel wash takes about 5 minutes; the whole visit — tunnel, towel-dry and vacuums — is about 10 minutes. Detailing is by appointment.'
 	]
 };
 
@@ -87,7 +96,7 @@ export const packages: Package[] = [
 		price: 16,
 		tagline: 'A quality clean, every time.',
 		description:
-			'Our everyday exterior wash: a gentle soft-touch clean, spot-free rinse and a shine on your wheels and tires. Perfect between details.',
+			'Our everyday exterior wash: a gentle soft-touch clean, spot-free rinse and a shine on your wheels and tires. Perfect between details. About 10 minutes for the whole visit — around 5 minutes in the tunnel, the rest is drying and finishing.',
 		features: ['Exterior Wash', 'Wheel Cleaning', 'Tire Shine'],
 		duration: 'About 10 minutes',
 		image: 'gallery-sedan'
@@ -290,6 +299,42 @@ export const memberships: Membership[] = [
 	}
 ];
 
+// Membership management rules — surfaced on /memberships, /account and in the
+// Membership Terms. All mock in this demo: no real billing takes place.
+export const membershipRules = {
+	pause: 'Pause for up to 60 days a year — billing stops while paused and resumes when you reactivate.',
+	vehicleSwaps: 'Swap your registered vehicle up to 2 times a year, free — in your account or at any location.',
+	extraVehicle:
+		'Add a family or second vehicle for $10/mo (Basic Club), $15/mo (Premium Club) or $20/mo (Deluxe Club).',
+	billing: 'Billed monthly on your join date, and your plan runs to the end of the paid month if you cancel.',
+	cancel: 'Cancel in 2 clicks from your account — online, in person or by phone — with no fee and no phone call required.'
+};
+
+// Florida seasons — wash advice for the year, linked from the home page.
+export const floridaSeasons = [
+	{
+		name: 'Love Bug Season',
+		months: 'April – May & August – September',
+		text: 'Love bugs swarm twice a year, and their residue can etch paint in a day or two of Florida sun. Wash the same day you drive through a swarm — never scrub dried bugs with a dry cloth.',
+		link: '/blog/lovebug-season',
+		linkLabel: 'Read the love bug guide'
+	},
+	{
+		name: 'Rainy Season',
+		months: 'May – October',
+		text: 'Afternoon storms are a daily fact of life. If it rains within 48 hours of your wash, come back for a free re-wash of the same car — bring your receipt or booking reference.',
+		link: '/rain-guarantee',
+		linkLabel: 'How the rain guarantee works'
+	},
+	{
+		name: 'Hurricane Season',
+		months: '1 June – 30 November',
+		text: 'Before a storm, a wash and a coat of wax keep salt, sand and storm debris from bonding to your paint. After a storm, rinse salt spray and grit off promptly.',
+		link: '/blog/salt-air-care',
+		linkLabel: 'Read the salt-air guide'
+	}
+];
+
 export type Location = {
 	slug: string;
 	city: string;
@@ -360,25 +405,25 @@ export const reviews = [
 ];
 
 export const faqs = [
-	{ q: 'How long does a wash take?', a: 'A Basic Wash takes about 10 minutes, Premium about 15, and a Deluxe Detail around 45 minutes. Detailing services are booked by appointment so there is no waiting around.', category: 'Wash' },
+	{ q: 'How long does a wash take?', a: 'A Basic Wash takes about 10 minutes for the whole visit — around 5 minutes in the tunnel, the rest is drying and finishing. Premium is about 15 minutes, and a Deluxe Detail around 45 minutes. Detailing services are booked by appointment so there is no waiting around.', category: 'Wash' },
 	{ q: 'Do I need an appointment?', a: 'No appointment is needed for tunnel washes — just drive in. Detailing, ceramic coating and interior services are by appointment so we can give your car the time it deserves.', category: 'Booking' },
 	{ q: 'Is your wash safe for my paint?', a: 'Yes. We use soft-touch foam materials, filtered water and pH-neutral soaps. Our wash is safe for clear coat, ceramic coatings and vinyl wraps.', category: 'Wash' },
 	{ q: 'How does the Unlimited Wash Club work?', a: 'Pick a plan, register your car, and wash as often as you like at any Florida Shine location. Plans are month-to-month and you can cancel anytime.', category: 'Membership' },
 	{ q: 'Do you wash trucks and SUVs?', a: 'Yes — our tunnels fit most trucks and SUVs up to 7 feet tall. Oversized vehicles and dually trucks are welcome at our detail studios by appointment.', category: 'Wash' },
 	{ q: 'What payment methods do you accept?', a: 'We accept all major cards, Apple Pay, Google Pay and cash at every location. Memberships are billed monthly to your card.', category: 'Booking' },
 	{ q: 'Do you offer gift cards?', a: 'Yes — gift cards from $25 to $200 are available in-store and by phone. They never expire and work at every location.', category: 'Wash' },
-	{ q: 'What if it rains after my wash?', a: 'If it rains within 24 hours of your wash, come back for a free re-wash. Florida weather is unpredictable — your shine should not be.', category: 'Wash' },
-	{ q: 'How long does the rain-check last?', a: 'The rain-check is a free re-wash within 24 hours of rain after your wash. Bring your receipt (or your booking reference) and we will re-wash the same car free.', category: 'Wash' },
-	{ q: 'How tall a vehicle fits in the tunnel?', a: 'The tunnel fits vehicles up to 7 feet tall and 7 feet wide. Taller vehicles, dually trucks and oversized rigs are welcome at our detail studios by appointment.', category: 'Locations' },
+	{ q: 'What if it rains after my wash?', a: 'If it rains within 48 hours of your wash, come back for a free re-wash. Florida weather is unpredictable — your shine should not be.', category: 'Wash' },
+	{ q: 'How long does the rain-check last?', a: 'The rain-check is a free re-wash within 48 hours of rain after your wash. Bring your receipt (or your booking reference) and we will re-wash the same car free.', category: 'Wash' },
+	{ q: 'How tall a vehicle fits in the tunnel?', a: 'The tunnel fits vehicles up to 7 feet tall and 73 inches wide. Taller vehicles, dually trucks and oversized rigs are welcome at our detail studios by appointment.', category: 'Locations' },
 	{ q: 'Can I use my membership at any location?', a: 'Yes — every Unlimited Wash Club plan works at all 8 Florida Shine locations, and your RFID windshield sticker is recognised at every tunnel.', category: 'Membership' },
 	{ q: 'Do gift cards expire?', a: 'No. Gift cards never expire — under the federal 5-year rule they are valid for at least five years from purchase, and at Florida Shine they carry no expiry date at all.', category: 'Booking' }
 ];
 
 export const giftCards = [
-	{ amount: 25, note: 'A quick wash for someone you like.' },
-	{ amount: 50, note: 'A Deluxe Detail, on you.' },
-	{ amount: 100, note: 'A month of Unlimited washes.' },
-	{ amount: 200, note: 'The full Florida Shine treatment.' }
+	{ amount: 25, note: 'A Basic Wash ($16) with change to spare — or put it toward any wash.' },
+	{ amount: 50, note: 'A Deluxe Detail ($45) with $5 to spare.' },
+	{ amount: 100, note: 'About 2½–5 months of Unlimited Club — 5 months of Basic ($19/mo), 3 of Premium ($29/mo), 2½ of Deluxe ($39/mo).' },
+	{ amount: 200, note: 'About 5–10 months of Unlimited Club — or four Deluxe Details.' }
 ];
 
 export const team = [
@@ -424,6 +469,9 @@ export type BlogPost = {
 	readTime: string;
 	image: string;
 	category: string;
+	author: string;
+	authorRole: string;
+	authorBio?: string;
 	body: string[];
 };
 export const blogPosts: BlogPost[] = [
@@ -435,6 +483,8 @@ export const blogPosts: BlogPost[] = [
 		readTime: '4 min read',
 		image: 'blog-lovebugs',
 		category: 'Car Care Tips',
+		author: 'Angela Brooks',
+		authorRole: 'Head of Detailing',
 		body: [
 			'Love bugs arrive in two waves every year — roughly April to May, then again August to September — and they arrive in clouds. A single drive down I-95 can leave your bumper and mirrors plastered with them.',
 			'The danger is not the bug itself, it is what happens next. Love bug residue is acidic, and in Florida sun it bakes onto the paint. Left for a day or two, it can etch the clear coat — a dull mark that no wash will remove and only polishing can fix.',
@@ -451,6 +501,8 @@ export const blogPosts: BlogPost[] = [
 		readTime: '4 min read',
 		image: 'blog-salt-air',
 		category: 'Car Care Tips',
+		author: 'Carlos Mendez',
+		authorRole: 'Founder & Miami Lead',
 		body: [
 			'Living near the Gulf means your car breathes salt air every day. Salt settles on paint, in door jambs and under the car, and where it sits it corrodes — slowly on paint, faster on bare metal and brake parts.',
 			'Hard water makes it worse. Tap water in much of Florida is mineral-heavy, so a wash with unfiltered water dries into white spots that etch into the clear coat in the sun. That is why every Florida Shine wash finishes with a filtered, spot-free rinse.',
@@ -467,6 +519,8 @@ export const blogPosts: BlogPost[] = [
 		readTime: '5 min read',
 		image: 'blog-ceramic-aftercare',
 		category: 'Car Care Tips',
+		author: 'Angela Brooks',
+		authorRole: 'Head of Detailing',
 		body: [
 			'First, the distinction that matters most: a spray ceramic you buy in a bottle is a quick top-up that lasts weeks. A professional coating is a multi-step application — wash, decontamination, clay bar, then the coating itself — that bonds to the paint and lasts up to 12 months. They are different products doing different jobs.',
 			'A professional coating does a lot: water beads and rolls off, dirt releases more easily, UV protection is built in, and the gloss is genuinely deeper than wax. What it does not do is stop rock chips — it is a thin chemical layer, not armour — and it does not make paint scratch-proof. Keys, brushes and grit can still mark it.',
@@ -494,8 +548,8 @@ export const offers = [
 	{
 		slug: 'first-wash-free',
 		title: 'Your First Wash Is Free',
-		detail: 'One free Basic Wash per vehicle for first-time visitors. Use text code SHINEFREE at the wash — no card required.',
-		terms: 'One free Basic Wash per vehicle, first visit only. No card required. Show the code SHINEFREE at any Florida Shine location. Not combinable with other offers.'
+		detail: 'One free Basic Wash per vehicle for first-time visitors. Enter code SHINEFREE when you book online and your first Basic Wash is $0 — or show the code at any location and we will apply it in person. No card required.',
+		terms: 'One free Basic Wash per vehicle, first visit only. No card required. Redeem online at booking with code SHINEFREE, or show the code in person at any Florida Shine location. Not combinable with other offers.'
 	},
 	{
 		slug: 'premium-club-half-price',
@@ -505,9 +559,9 @@ export const offers = [
 	},
 	{
 		slug: 'rain-check',
-		title: 'Rain-Check: Free Rewash Within 24 Hours of Rain',
-		detail: 'If it rains within 24 hours of your wash, come back for a free re-wash of the same car. Bring your receipt or booking reference.',
-		terms: 'Free re-wash within 24 hours of rain after your wash, same vehicle only. Bring your receipt or booking reference. One re-wash per paid wash.'
+		title: 'Rain-Check: Free Rewash Within 48 Hours of Rain',
+		detail: 'If it rains within 48 hours of your wash, come back for a free re-wash of the same car. Bring your receipt or booking reference.',
+		terms: 'Free re-wash within 48 hours of rain after your wash, same vehicle only. Bring your receipt or booking reference. One re-wash per paid wash.'
 	}
 ];
 

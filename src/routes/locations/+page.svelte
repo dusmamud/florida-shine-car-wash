@@ -8,12 +8,26 @@
 	const shown = $derived(
 		locations.filter((l) => !query.trim() || `${l.city} ${l.name} ${l.address} ${l.zip}`.toLowerCase().includes(query.trim().toLowerCase()))
 	);
+
+	const jsonLd = {
+		'@context': 'https://schema.org',
+		'@type': 'BreadcrumbList',
+		itemListElement: [
+			{ '@type': 'ListItem', position: 1, name: 'Home', item: 'https://florida-shine-car-wash.pages.dev/' },
+			{ '@type': 'ListItem', position: 2, name: 'Locations', item: 'https://florida-shine-car-wash.pages.dev/locations' }
+		]
+	};
 </script>
 <Seo
 	title="Locations — Florida Shine Car Wash"
 	description="8 Florida Shine Car Wash locations from Miami to Jacksonville — Miami, Tampa, Orlando, Fort Lauderdale, Naples and Sarasota. Soft-touch tunnel, free vacuums, open 7 days a week."
 	canonical="/locations"
 	ogImage="wash-building"
+	jsonLd={jsonLd}
+	hreflang={[
+		{ lang: 'es', href: 'https://florida-shine-car-wash.pages.dev/es/locations' },
+		{ lang: 'x-default', href: 'https://florida-shine-car-wash.pages.dev/locations' }
+	]}
 />
 <PageHero eyebrow="CLOSE TO YOU" title="Find a Location Near You" subtitle="From Miami to Tampa, we're here to keep Florida shining. 8 locations, open 7 days a week." />
 <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6">
@@ -28,7 +42,8 @@
 				<h2 class="mt-5 font-display text-xl font-black text-navy">What every location offers</h2>
 				<ul class="mt-2 space-y-1.5 text-sm text-muted">
 					<li>• Soft-touch tunnel wash, safe for every paint type</li>
-					<li>• Free vacuums after every wash — {locations[0].lastWash.toLowerCase()}</li>
+					<li>• Free vacuums after every wash — free for 15 minutes with any wash</li>
+					<li>• {locations[0].lastWash}</li>
 					<li>• Memberships work at all 8 locations — your RFID sticker is recognised everywhere</li>
 					<li>• Tunnel fits vehicles up to 7 ft tall</li>
 				</ul>

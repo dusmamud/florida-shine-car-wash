@@ -4,12 +4,22 @@
 	import Seo from '#lib/components/Seo.svelte';
 	import { careers } from '#lib/data/site.ts';
 	let applied = $state('');
+
+	const jsonLd = {
+		'@context': 'https://schema.org',
+		'@type': 'BreadcrumbList',
+		itemListElement: [
+			{ '@type': 'ListItem', position: 1, name: 'Home', item: 'https://florida-shine-car-wash.pages.dev/' },
+			{ '@type': 'ListItem', position: 2, name: 'Careers', item: 'https://florida-shine-car-wash.pages.dev/careers' }
+		]
+	};
 </script>
 <Seo
 	title="Careers — Florida Shine Car Wash"
 	description="Careers at Florida Shine Car Wash: wash attendant, detail technician, shift supervisor and customer service roles across Florida, from $16/hr. We train you and promote from within."
 	canonical="/careers"
 	ogImage="about-team"
+	jsonLd={jsonLd}
 />
 <PageHero eyebrow="JOIN THE TEAM" title="Careers at Florida Shine" subtitle="Sunny days, friendly drivers and cars that leave happier than they arrived. We train you, pay fairly and promote from within." />
 <section class="mx-auto max-w-4xl px-4 py-12 sm:px-6">

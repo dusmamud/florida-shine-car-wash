@@ -8,6 +8,8 @@
 	//   type?: 'website' | 'product' | 'article' — default "website"
 	//   jsonLd?: object          — optional JSON-LD object (Organization, AutoWash, BreadcrumbList,
 	//                              Product+Offer only). NEVER pass aggregateRating, FAQPage or HowTo.
+	//   hreflang?: { lang: string; href: string }[] — alternate-language URLs, e.g.
+	//                              [{ lang: 'es', href: 'https://…/es/packages' }, { lang: 'x-default', href: 'https://…/packages' }]
 	const base = 'https://florida-shine-car-wash.pages.dev';
 	let {
 		title,
@@ -15,7 +17,8 @@
 		canonical,
 		ogImage = 'hero-soapy-car',
 		type = 'website',
-		jsonLd
+		jsonLd,
+		hreflang
 	}: {
 		title: string;
 		description: string;
@@ -23,6 +26,7 @@
 		ogImage?: string;
 		type?: 'website' | 'product' | 'article';
 		jsonLd?: Record<string, unknown>;
+		hreflang?: { lang: string; href: string }[];
 	} = $props();
 	const url = $derived(`${base}${canonical}`);
 	const imageUrl = $derived(`${base}/images/${ogImage}-1200.jpg`);
@@ -33,6 +37,11 @@
 	<title>{title}</title>
 	<meta name="description" content={description} />
 	<link rel="canonical" href={url} />
+	{#if hreflang}
+		{#each hreflang as alt}
+			<link rel="alternate" hreflang={alt.lang} href={alt.href} />
+		{/each}
+	{/if}
 	<meta property="og:title" content={title} />
 	<meta property="og:description" content={description} />
 	<meta property="og:image" content={imageUrl} />

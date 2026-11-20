@@ -109,8 +109,13 @@
 					onclick={() => goTo(i)}
 					aria-label="Gallery slide {i + 1} of {snaps.length}"
 					aria-current={index === i}
-					class="h-3 min-h-3 rounded-full transition-all duration-200 {index === i ? 'w-8 bg-navy' : 'w-3 bg-line hover:bg-sky'}"
-				></button>
+					class="group flex h-6 min-h-6 w-6 min-w-6 items-center justify-center"
+				>
+					<span
+						class="block h-3 rounded-full transition-all duration-200 {index === i ? 'w-8 bg-navy' : 'w-3 bg-line group-hover:bg-sky'}"
+						aria-hidden="true"
+					></span>
+				</button>
 			{/each}
 		</div>
 		<div class="flex shrink-0 items-center gap-2">

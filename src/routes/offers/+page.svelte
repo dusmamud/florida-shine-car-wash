@@ -18,7 +18,7 @@
 
 <Seo
 	title="Offers & Deals — Florida Shine Car Wash"
-	description="Florida Shine offers: first wash free with code SHINEFREE, first month of Premium Club 50% off ($14.50, then $29/mo), and a free rain-check rewash within 24 hours of rain."
+	description="Florida Shine offers: first wash free with code SHINEFREE, first month of Premium Club 50% off ($14.50, then $29/mo), and a free rain-check rewash within 48 hours of rain."
 	canonical="/offers"
 	ogImage="hero-soapy-car"
 	jsonLd={jsonLd}
@@ -47,7 +47,7 @@
 				{/if}
 				<p class="mt-4 rounded-2xl bg-mist p-4 text-xs leading-relaxed text-muted"><strong class="text-navy">Terms:</strong> {offer.terms}</p>
 				{#if offer.slug === 'first-wash-free'}
-					<a href="/book" class="mt-5 inline-flex min-h-12 items-center justify-center rounded-full bg-navy px-6 py-3 text-sm font-black text-white">BOOK YOUR FREE WASH</a>
+					<a href="/book?promo=SHINEFREE" class="mt-5 inline-flex min-h-12 items-center justify-center rounded-full bg-navy px-6 py-3 text-sm font-black text-white">BOOK YOUR FREE WASH</a>
 				{:else if offer.slug === 'premium-club-half-price'}
 					<a href="/memberships" class="mt-5 inline-flex min-h-12 items-center justify-center rounded-full bg-sun px-6 py-3 text-sm font-black text-navy">JOIN PREMIUM CLUB — $14.50 FIRST MONTH</a>
 				{:else}

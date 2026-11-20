@@ -3,12 +3,22 @@
 	import Picture from '#lib/components/Picture.svelte';
 	import Seo from '#lib/components/Seo.svelte';
 	import { team } from '#lib/data/site.ts';
+
+	const jsonLd = {
+		'@context': 'https://schema.org',
+		'@type': 'BreadcrumbList',
+		itemListElement: [
+			{ '@type': 'ListItem', position: 1, name: 'Home', item: 'https://florida-shine-car-wash.pages.dev/' },
+			{ '@type': 'ListItem', position: 2, name: 'About Us', item: 'https://florida-shine-car-wash.pages.dev/about' }
+		]
+	};
 </script>
 <Seo
 	title="About Us — Florida Shine Car Wash"
 	description="Florida Shine started in 2018 with one wash tunnel in Miami. Now 8 locations from Miami to Jacksonville, with eco-safe soaps, reclaimed water and a team that treats every car like its own."
 	canonical="/about"
 	ogImage="about-team"
+	jsonLd={jsonLd}
 />
 <PageHero eyebrow="ABOUT US" title="Born in Florida, Built for Florida" subtitle="Florida Shine started in 2018 with one wash tunnel in Miami and a simple idea: a clean car should be fast, affordable and kind to the planet." />
 <section class="mx-auto grid max-w-7xl items-center gap-8 px-4 py-12 sm:px-6 lg:grid-cols-2">
@@ -18,8 +28,9 @@
 		<p class="mt-4 leading-relaxed text-muted">Miami sun, salt air and beach sand are brutal on paint. We built Florida Shine to fight back — soft-touch foam, filtered recycled water, spot-free rinses and waxes made for Florida weather. What started as one tunnel is now 8 locations from Miami to Jacksonville, and the standard has never changed: if we wouldn't park it in our own driveway, it doesn't leave the wash.</p>
 		<h2 class="mt-8 font-display text-3xl font-black text-navy">Our eco promise</h2>
 		<ul class="mt-4 space-y-2 text-muted">
-			<li>• Up to 80% of wash water is reclaimed and filtered for reuse.</li>
+			<li>• Wash water is reclaimed and filtered for reuse wherever our systems allow — no percentage claimed, because it varies by location and season.</li>
 			<li>• Biodegradable, eco-safe soaps — safe for Florida's waterways.</li>
+			<li>• Nothing from the wash goes into storm drains — wash water is captured and treated.</li>
 			<li>• LED lighting and solar panels at our newest locations.</li>
 			<li>• Free vacuums, so you skip the single-use wipes.</li>
 		</ul>

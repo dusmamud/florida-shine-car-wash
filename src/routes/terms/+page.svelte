@@ -1,14 +1,24 @@
 <script lang="ts">
 	import PageHero from '#lib/components/PageHero.svelte';
 	import Seo from '#lib/components/Seo.svelte';
+
+	const jsonLd = {
+		'@context': 'https://schema.org',
+		'@type': 'BreadcrumbList',
+		itemListElement: [
+			{ '@type': 'ListItem', position: 1, name: 'Home', item: 'https://florida-shine-car-wash.pages.dev/' },
+			{ '@type': 'ListItem', position: 2, name: 'Terms of Service', item: 'https://florida-shine-car-wash.pages.dev/terms' }
+		]
+	};
 </script>
 <Seo
 	title="Terms of Service — Florida Shine Car Wash"
 	description="Terms of service for Florida Shine Car Wash: services, payment, Unlimited Wash Club membership, rain guarantee, gift cards, vehicle condition and liability."
 	canonical="/terms"
 	ogImage="hero-soapy-car"
+	jsonLd={jsonLd}
 />
-<PageHero eyebrow="LEGAL" title="Terms of Service" subtitle="Last updated: November 2024." />
+<PageHero eyebrow="LEGAL" title="Terms of Service" subtitle="Last updated: November 2026." />
 <section class="mx-auto max-w-3xl px-4 py-12 sm:px-6">
 	<div class="space-y-8 leading-relaxed text-muted">
 		<section>
@@ -25,7 +35,7 @@
 		</section>
 		<section>
 			<h2 class="font-display text-2xl font-black text-navy">4. Rain guarantee</h2>
-			<p class="mt-2">If it rains within 24 hours of your wash, bring your receipt or booking reference back for a free re-wash of the same vehicle. One free re-wash per paid wash.</p>
+			<p class="mt-2">If it rains within 48 hours of your wash, bring your receipt or booking reference back for a free re-wash of the same vehicle. One free re-wash per paid wash.</p>
 		</section>
 		<section>
 			<h2 class="font-display text-2xl font-black text-navy">5. Vehicle condition &amp; liability</h2>
@@ -33,7 +43,7 @@
 		</section>
 		<section>
 			<h2 class="font-display text-2xl font-black text-navy">6. Gift cards</h2>
-			<p class="mt-2">Gift cards never expire, are non-refundable, and are valid at all Florida Shine locations. Lost cards cannot be replaced without proof of purchase.</p>
+			<p class="mt-2">Gift cards never expire, are non-refundable, and are valid at all Florida Shine locations. No fees are charged after purchase (Florida §501.95) — no dormancy, activation or balance fees, ever. Lost cards cannot be replaced without proof of purchase.</p>
 		</section>
 		<section>
 			<h2 class="font-display text-2xl font-black text-navy">7. Changes</h2>
