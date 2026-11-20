@@ -40,7 +40,13 @@
 		if (p === '/es') return '/';
 		return p.slice(3) || '/';
 	});
-	const search = $derived(page.url.search);
+	// Query string is read on the client only — `page.url.search` throws during
+	// prerender (url_search_unavailable_prerender). Language links keep the
+	// query after hydration; prerendered hrefs simply omit it.
+	let search = $state('');
+	$effect(() => {
+		search = page.url.search;
+	});
 	// Nav links follow the current language where a Spanish page exists.
 	const navLinks = $derived(
 		links.map((l) => ({ ...l, href: isEs ? (esEquivalents[l.href] ?? l.href) : l.href }))
